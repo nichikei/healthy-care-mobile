@@ -14,6 +14,11 @@ import CalendarScreen from '../screens/calendar/CalendarScreen';
 import HealthInsightsScreen from '../screens/healthInsights/HealthInsightsScreen';
 import ExercisesScreen from '../screens/exercises/ExercisesScreen';
 import MessagesScreen from '../screens/messages/MessagesScreen';
+import GoalsScreen from '../screens/goals/GoalsScreen';
+import WaterIntakeScreen from '../screens/waterIntake/WaterIntakeScreen';
+import MeasurementsScreen from '../screens/measurements/MeasurementsScreen';
+import RemindersScreen from '../screens/reminders/RemindersScreen';
+import ProfileScreen from '../screens/profile/ProfileScreen';
 import { colors } from '../context/ThemeContext';
 
 export type UtilitiesStackParamList = {
@@ -26,6 +31,11 @@ export type UtilitiesStackParamList = {
   HealthInsights: undefined;
   Exercises: undefined;
   Messages: undefined;
+  Goals: undefined;
+  WaterIntake: undefined;
+  Measurements: undefined;
+  Reminders: undefined;
+  Profile: undefined;
 };
 
 const Stack = createNativeStackNavigator<UtilitiesStackParamList>();
@@ -88,7 +98,7 @@ export const UtilitiesStackNavigator = () => {
       <Stack.Screen
         name="HealthInsights"
         component={HealthInsightsScreen}
-        options={{ title: 'Kiến thức sức khỏe' }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Settings"
@@ -108,6 +118,31 @@ export const UtilitiesStackNavigator = () => {
       <Stack.Screen
         name="Messages"
         component={MessagesScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Goals"
+        component={GoalsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="WaterIntake"
+        component={WaterIntakeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Measurements"
+        component={MeasurementsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Reminders"
+        component={RemindersScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={ProfileScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

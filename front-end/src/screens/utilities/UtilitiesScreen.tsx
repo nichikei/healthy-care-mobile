@@ -62,6 +62,26 @@ const UtilitiesScreen = () => {
     navigation.navigate('Exercises');
   };
 
+  const navigateToGoals = () => {
+    navigation.navigate('Goals');
+  };
+
+  const navigateToWaterIntake = () => {
+    navigation.navigate('WaterIntake');
+  };
+
+  const navigateToMeasurements = () => {
+    navigation.navigate('Measurements');
+  };
+
+  const navigateToReminders = () => {
+    navigation.navigate('Reminders');
+  };
+
+  const navigateToProfile = () => {
+    navigation.navigate('Profile');
+  };
+
   const handleLogout = async () => {
     Alert.alert(
       'Đăng xuất',
@@ -135,31 +155,31 @@ const UtilitiesScreen = () => {
       id: 'goals',
       title: 'Mục tiêu',
       icon: 'trophy',
-      onPress: () => Alert.alert('Mục tiêu', 'Chức năng đang phát triển'),
+      onPress: navigateToGoals,
     },
     {
       id: 'water',
       title: 'Nước uống',
       icon: 'water',
-      onPress: () => Alert.alert('Nước uống', 'Chức năng đang phát triển'),
+      onPress: navigateToWaterIntake,
     },
     {
       id: 'measurements',
       title: 'Số đo',
       icon: 'resize',
-      onPress: () => Alert.alert('Số đo', 'Chức năng đang phát triển'),
+      onPress: navigateToMeasurements,
     },
     {
       id: 'reminders',
       title: 'Nhắc nhở',
       icon: 'notifications',
-      onPress: () => Alert.alert('Nhắc nhở', 'Chức năng đang phát triển'),
+      onPress: navigateToReminders,
     },
     {
       id: 'profile',
       title: 'Hồ sơ',
       icon: 'person',
-      onPress: () => Alert.alert('Hồ sơ', 'Chức năng đang phát triển'),
+      onPress: navigateToProfile,
     },
   ];
 

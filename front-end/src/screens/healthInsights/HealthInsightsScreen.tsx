@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   Image,
   Modal,
+  StatusBar,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { colors, spacing, borderRadius } from '../../context/ThemeContext';
@@ -154,6 +155,103 @@ const ARTICLES: Article[] = [
     tags: ['stretching', 'linh hoạt', 'phòng chấn thương'],
     publishedDate: '01/12/2025',
   },
+  {
+    id: '11',
+    title: 'Uống nước đúng cách: Bao nhiêu là đủ?',
+    category: 'wellness',
+    image: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=800',
+    author: 'BS. Nguyễn Lan',
+    readTime: 4,
+    excerpt: 'Tầm quan trọng của việc hydrate đúng cách và dấu hiệu thiếu nước.',
+    content: 'Cơ thể cần khoảng 2-3 lít nước mỗi ngày, tùy thuộc vào cân nặng, hoạt động và thời tiết. Nước giúp điều hòa nhiệt độ cơ thể, vận chuyển chất dinh dưỡng, đào thải độc tố. Dấu hiệu thiếu nước: môi khô, nước tiểu vàng đậm, mệt mỏi, đau đầu. Uống nước đều đặn trong ngày, không đợi khát mới uống.',
+    tags: ['hydration', 'nước', 'sức khỏe'],
+    publishedDate: '30/11/2025',
+  },
+  {
+    id: '12',
+    title: 'Chạy bộ đúng tư thế: Tránh chấn thương',
+    category: 'fitness',
+    image: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=800',
+    author: 'HLV Minh Tuấn',
+    readTime: 6,
+    excerpt: 'Hướng dẫn kỹ thuật chạy bộ an toàn và hiệu quả.',
+    content: 'Tư thế chạy đúng giúp tránh chấn thương và tăng hiệu suất. Lưu ý: thân người nghiêng nhẹ về phía trước, vai thư giãn, tay swing tự nhiên, chân đáp nhẹ xuống giữa bàn chân, không gót chân. Tăng cường độ từ từ, không vượt quá 10% mỗi tuần. Đầu tư giày chạy phù hợp với form chân.',
+    tags: ['chạy bộ', 'kỹ thuật', 'an toàn'],
+    isFeatured: true,
+    publishedDate: '29/11/2025',
+  },
+  {
+    id: '13',
+    title: 'Vitamin D: Nguồn năng lượng mặt trời',
+    category: 'nutrition',
+    image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
+    author: 'Chuyên gia Hoàng Anh',
+    readTime: 5,
+    excerpt: 'Tại sao Vitamin D quan trọng và cách bổ sung hiệu quả.',
+    content: 'Vitamin D cần thiết cho xương khỏe, hệ miễn dịch, và sức khỏe tâm thần. Cơ thể tổng hợp Vitamin D từ ánh nắng mặt trời. Thiếu Vitamin D phổ biến ở người ít ra ngoài, người da tối, và vùng ít nắng. Nguồn cung cấp: ánh nắng sớm 15-20 phút/ngày, cá béo (cá hồi, cá thu), trứng, sữa fortified, hoặc bổ sung viên uống.',
+    tags: ['vitamin D', 'xương', 'miễn dịch'],
+    publishedDate: '28/11/2025',
+  },
+  {
+    id: '14',
+    title: 'Thiền định cho người mới bắt đầu',
+    category: 'wellness',
+    image: 'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800',
+    author: 'Giáo viên Thanh Hà',
+    readTime: 7,
+    excerpt: 'Hướng dẫn từng bước để bắt đầu thực hành thiền định.',
+    content: 'Thiền định giúp giảm stress, tăng tập trung, cải thiện sức khỏe tâm thần. Cách bắt đầu: Chọn không gian yên tĩnh, ngồi thoải mái, nhắm mắt hoặc nhìn điểm cố định, tập trung vào hơi thở. Bắt đầu với 5 phút mỗi ngày, tăng dần. Khi tâm trí lang thang, nhẹ nhàng đưa về hơi thở. Không kỳ vọng hoàn hảo, quan trọng là thực hành đều đặn.',
+    tags: ['thiền', 'mindfulness', 'thư giãn'],
+    publishedDate: '27/11/2025',
+  },
+  {
+    id: '15',
+    title: 'Chất béo lành mạnh: Không phải kẻ thù',
+    category: 'nutrition',
+    image: 'https://images.unsplash.com/photo-1447175008436-054170c2e979?w=800',
+    author: 'Dinh dưỡng viên Mai Linh',
+    readTime: 6,
+    excerpt: 'Phân biệt chất béo tốt và xấu cho sức khỏe.',
+    content: 'Chất béo không bão hòa (omega-3, omega-6) tốt cho tim mạch, não bộ, giảm viêm. Nguồn: cá béo, bơ, các loại hạt, dầu ô liu. Chất béo bão hòa và trans fat nên hạn chế: thịt mỡ, bơ động vật, thức ăn chiên rán, đồ ăn chế biến sẵn. Cân bằng là chìa khóa: 20-35% năng lượng từ chất béo lành mạnh.',
+    tags: ['chất béo', 'omega-3', 'tim mạch'],
+    publishedDate: '26/11/2025',
+  },
+  {
+    id: '16',
+    title: 'Plank: Bài tập core tối ưu',
+    category: 'fitness',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800',
+    author: 'PT Quang Minh',
+    readTime: 5,
+    excerpt: 'Cách thực hiện plank đúng kỹ thuật và biến thể.',
+    content: 'Plank là bài tập đẳng trường tuyệt vời cho core, vai, lưng. Kỹ thuật: Tì khuỷu tay xuống sàn, cơ thể thẳng từ đầu đến chân, core strained, không hạ hoặc nâng mông. Giữ 30-60 giây, nghỉ, lặp lại. Biến thể: side plank, plank with leg lift, plank to push-up. Tránh: võng lưng, nín thở, vai nhún lên.',
+    tags: ['plank', 'core', 'abs'],
+    publishedDate: '25/11/2025',
+  },
+  {
+    id: '17',
+    title: 'Tác hại của đường và cách giảm thiểu',
+    category: 'nutrition',
+    image: 'https://images.unsplash.com/photo-1499638673689-79a0b5115d87?w=800',
+    author: 'BS. Tuấn Anh',
+    readTime: 8,
+    excerpt: 'Hiểu về đường tinh luyện và chiến lược giảm tiêu thụ.',
+    content: 'Tiêu thụ đường quá mức dẫn đến béo phì, tiểu đường type 2, sâu răng, bệnh tim. WHO khuyến nghị dưới 25g đường/ngày. Đường ẩn trong: nước ngọt, nước trái cây đóng chai, sốt, yogurt có hương vị, đồ ăn chế biến sẵn. Mẹo giảm đường: đọc nhãn dinh dưỡng, chọn nguyên liệu tự nhiên, thay nước ngọt bằng nước lọc/trà không đường, ăn trái cây thay vì uống nước ép.',
+    tags: ['đường', 'tiểu đường', 'giảm cân'],
+    publishedDate: '24/11/2025',
+  },
+  {
+    id: '18',
+    title: 'Sức mạnh của tư thế: Posture và sức khỏe',
+    category: 'wellness',
+    image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800',
+    author: 'Chuyên gia Vật lý trị liệu Hải Yến',
+    readTime: 6,
+    excerpt: 'Tầm quan trọng của tư thế đúng trong cuộc sống hàng ngày.',
+    content: 'Tư thế xấu gây đau lưng, cổ, vai, đau đầu, giảm năng lượng. Nguyên nhân: ngồi lâu, thiết bị điện tử, stress, cơ yếu. Cải thiện tư thế: điều chỉnh ghế và màn hình máy tính, nghỉ giải lao 30 phút/lần, tập stretching, tăng cường cơ core và lưng, nhận thức về tư thế trong mọi hoạt động.',
+    tags: ['tư thế', 'đau lưng', 'ergonomics'],
+    publishedDate: '23/11/2025',
+  },
 ];
 
 const CATEGORIES = [
@@ -166,6 +264,7 @@ const CATEGORIES = [
 const TRENDING_TAGS = ['protein', 'giảm cân', 'yoga', 'HIIT', 'giấc ngủ', 'dinh dưỡng', 'tim mạch'];
 
 export default function HealthInsightsScreen() {
+  const navigation = useNavigation();
   const [selectedCategory, setSelectedCategory] = useState<ArticleCategory>('all');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [showArticleModal, setShowArticleModal] = useState(false);
@@ -191,7 +290,10 @@ export default function HealthInsightsScreen() {
 
     return (
       <View style={styles.featuredSection}>
-        <Text style={styles.sectionTitle}>Nổi bật</Text>
+        <View style={styles.sectionHeader}>
+          <Ionicons name="star" size={20} color="#FFD700" />
+          <Text style={styles.sectionTitle}>Nổi bật</Text>
+        </View>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -202,9 +304,10 @@ export default function HealthInsightsScreen() {
               key={article.id}
               style={styles.featuredCard}
               onPress={() => handleArticlePress(article)}
+              activeOpacity={0.9}
             >
               <Image source={{ uri: article.image }} style={styles.featuredImage} />
-              <View style={styles.featuredOverlay}>
+              <View style={styles.featuredGradient}>
                 <View style={[styles.categoryBadge, { backgroundColor: getCategoryColor(article.category) }]}>
                   <Text style={styles.categoryBadgeText}>
                     {CATEGORIES.find(c => c.id === article.category)?.name}
@@ -214,11 +317,15 @@ export default function HealthInsightsScreen() {
                   {article.title}
                 </Text>
                 <View style={styles.featuredMeta}>
-                  <Ionicons name="person-circle-outline" size={16} color="#fff" />
-                  <Text style={styles.featuredAuthor}>{article.author}</Text>
-                  <Text style={styles.featuredDot}>•</Text>
-                  <Ionicons name="time-outline" size={16} color="#fff" />
-                  <Text style={styles.featuredReadTime}>{article.readTime} phút</Text>
+                  <View style={styles.metaItem}>
+                    <Ionicons name="person" size={14} color="rgba(255,255,255,0.9)" />
+                    <Text style={styles.featuredAuthor}>{article.author}</Text>
+                  </View>
+                  <View style={styles.metaDivider} />
+                  <View style={styles.metaItem}>
+                    <Ionicons name="time" size={14} color="rgba(255,255,255,0.9)" />
+                    <Text style={styles.featuredReadTime}>{article.readTime} phút</Text>
+                  </View>
                 </View>
               </View>
             </TouchableOpacity>
@@ -233,15 +340,22 @@ export default function HealthInsightsScreen() {
 
     return (
       <View style={styles.trendingSection}>
-        <Text style={styles.sectionTitle}>Xu hướng</Text>
-        <View style={styles.tagsContainer}>
+        <View style={styles.sectionHeader}>
+          <Ionicons name="flame" size={20} color="#FF6B6B" />
+          <Text style={styles.sectionTitle}>Xu hướng</Text>
+        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tagsScroll}
+        >
           {TRENDING_TAGS.map((tag, index) => (
-            <View key={index} style={styles.tag}>
+            <TouchableOpacity key={index} style={styles.tag} activeOpacity={0.7}>
               <Ionicons name="trending-up" size={14} color={colors.primary} />
               <Text style={styles.tagText}>#{tag}</Text>
-            </View>
+            </TouchableOpacity>
           ))}
-        </View>
+        </ScrollView>
       </View>
     );
   };
@@ -249,19 +363,23 @@ export default function HealthInsightsScreen() {
   const renderArticlesList = () => {
     return (
       <View style={styles.articlesSection}>
-        <Text style={styles.sectionTitle}>
-          {selectedCategory === 'all' ? 'Tất cả bài viết' : `Bài viết về ${CATEGORIES.find(c => c.id === selectedCategory)?.name}`}
-        </Text>
+        <View style={styles.sectionHeader}>
+          <Ionicons name="document-text" size={20} color={colors.primary} />
+          <Text style={styles.sectionTitle}>
+            {selectedCategory === 'all' ? 'Tất cả bài viết' : CATEGORIES.find(c => c.id === selectedCategory)?.name}
+          </Text>
+        </View>
         {filteredArticles.map((article) => (
           <TouchableOpacity
             key={article.id}
             style={styles.articleCard}
             onPress={() => handleArticlePress(article)}
+            activeOpacity={0.95}
           >
             <Image source={{ uri: article.image }} style={styles.articleImage} />
             <View style={styles.articleContent}>
-              <View style={[styles.articleCategoryBadge, { backgroundColor: getCategoryColor(article.category) + '20' }]}>
-                <Text style={[styles.articleCategoryText, { color: getCategoryColor(article.category) }]}>
+              <View style={[styles.articleCategoryBadge, { backgroundColor: getCategoryColor(article.category) }]}>
+                <Text style={styles.articleCategoryText}>
                   {CATEGORIES.find(c => c.id === article.category)?.name}
                 </Text>
               </View>
@@ -271,10 +389,15 @@ export default function HealthInsightsScreen() {
               <Text style={styles.articleExcerpt} numberOfLines={2}>
                 {article.excerpt}
               </Text>
-              <View style={styles.articleMeta}>
-                <Text style={styles.articleAuthor}>{article.author}</Text>
-                <Text style={styles.articleDot}>•</Text>
-                <Text style={styles.articleReadTime}>{article.readTime} phút đọc</Text>
+              <View style={styles.articleFooter}>
+                <View style={styles.articleMeta}>
+                  <Ionicons name="person" size={14} color={colors.textSecondary} />
+                  <Text style={styles.articleAuthor}>{article.author}</Text>
+                </View>
+                <View style={styles.articleReadTime}>
+                  <Ionicons name="time" size={14} color={colors.textSecondary} />
+                  <Text style={styles.articleReadTimeText}>{article.readTime} phút</Text>
+                </View>
               </View>
             </View>
           </TouchableOpacity>
@@ -292,19 +415,20 @@ export default function HealthInsightsScreen() {
         animationType="slide"
         onRequestClose={() => setShowArticleModal(false)}
       >
-        <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <TouchableOpacity onPress={() => setShowArticleModal(false)} style={styles.backButton}>
-              <Ionicons name="arrow-back" size={24} color={colors.text} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.bookmarkButton}>
-              <Ionicons name="bookmark-outline" size={24} color={colors.text} />
-            </TouchableOpacity>
-          </View>
-
+        <View style={styles.modalContainer}>
+          <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
+          
           <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
             <Image source={{ uri: selectedArticle.image }} style={styles.modalImage} />
             
+            {/* Floating Back Button */}
+            <TouchableOpacity 
+              onPress={() => setShowArticleModal(false)} 
+              style={styles.modalBackButton}
+            >
+              <Ionicons name="arrow-back" size={24} color="#fff" />
+            </TouchableOpacity>
+
             <View style={styles.modalBody}>
               <View style={[styles.modalCategoryBadge, { backgroundColor: getCategoryColor(selectedArticle.category) }]}>
                 <Text style={styles.modalCategoryText}>
@@ -316,15 +440,15 @@ export default function HealthInsightsScreen() {
 
               <View style={styles.modalMeta}>
                 <View style={styles.modalMetaItem}>
-                  <Ionicons name="person-circle" size={20} color={colors.textSecondary} />
+                  <Ionicons name="person" size={18} color={colors.textSecondary} />
                   <Text style={styles.modalMetaText}>{selectedArticle.author}</Text>
                 </View>
                 <View style={styles.modalMetaItem}>
-                  <Ionicons name="calendar-outline" size={20} color={colors.textSecondary} />
+                  <Ionicons name="calendar" size={18} color={colors.textSecondary} />
                   <Text style={styles.modalMetaText}>{selectedArticle.publishedDate}</Text>
                 </View>
                 <View style={styles.modalMetaItem}>
-                  <Ionicons name="time-outline" size={20} color={colors.textSecondary} />
+                  <Ionicons name="time" size={18} color={colors.textSecondary} />
                   <Text style={styles.modalMetaText}>{selectedArticle.readTime} phút</Text>
                 </View>
               </View>
@@ -337,60 +461,75 @@ export default function HealthInsightsScreen() {
               <View style={styles.modalTags}>
                 {selectedArticle.tags.map((tag, index) => (
                   <View key={index} style={styles.modalTag}>
+                    <Ionicons name="pricetag" size={14} color={colors.primary} />
                     <Text style={styles.modalTagText}>#{tag}</Text>
                   </View>
                 ))}
               </View>
             </View>
           </ScrollView>
-        </SafeAreaView>
+        </View>
       </Modal>
     );
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor={colors.primary} />
+      
       {/* Header */}
       <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Kiến thức sức khỏe</Text>
-        <Text style={styles.headerSubtitle}>Cập nhật thông tin mới nhất</Text>
+        <View style={styles.headerRight} />
       </View>
 
       {/* Categories */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoriesContainer}
-        contentContainerStyle={styles.categoriesContent}
-      >
-        {CATEGORIES.map((category) => (
-          <TouchableOpacity
-            key={category.id}
-            style={[
-              styles.categoryChip,
-              selectedCategory === category.id && { backgroundColor: category.color },
-            ]}
-            onPress={() => setSelectedCategory(category.id as ArticleCategory)}
-          >
-            <Ionicons
-              name={category.icon as any}
-              size={18}
-              color={selectedCategory === category.id ? '#fff' : category.color}
-            />
-            <Text
+      <View style={styles.categoriesWrapper}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.categoriesContent}
+        >
+          {CATEGORIES.map((category) => (
+            <TouchableOpacity
+              key={category.id}
               style={[
-                styles.categoryChipText,
-                selectedCategory === category.id && styles.categoryChipTextActive,
+                styles.categoryChip,
+                selectedCategory === category.id && { 
+                  backgroundColor: category.color,
+                  borderColor: category.color,
+                },
               ]}
+              onPress={() => setSelectedCategory(category.id as ArticleCategory)}
+              activeOpacity={0.8}
             >
-              {category.name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+              <Ionicons
+                name={category.icon as any}
+                size={16}
+                color={selectedCategory === category.id ? '#fff' : category.color}
+              />
+              <Text
+                style={[
+                  styles.categoryChipText,
+                  selectedCategory === category.id && styles.categoryChipTextActive,
+                ]}
+              >
+                {category.name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
 
       {/* Main Content */}
-      <ScrollView style={styles.mainContent} showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        style={styles.mainContent} 
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         {renderFeaturedSection()}
         {renderTrendingTags()}
         {renderArticlesList()}
@@ -398,7 +537,7 @@ export default function HealthInsightsScreen() {
 
       {/* Article Detail Modal */}
       {renderArticleModal()}
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -408,27 +547,39 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   header: {
-    padding: spacing.md,
-    paddingBottom: spacing.sm,
+    backgroundColor: colors.primary,
+    paddingTop: 50,
+    paddingBottom: spacing.md,
+    paddingHorizontal: spacing.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  backButton: {
+    padding: spacing.sm,
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '700',
-    color: colors.text,
+    color: '#fff',
+    letterSpacing: 0.3,
+    flex: 1,
+    textAlign: 'center',
+    marginRight: -40,
   },
-  headerSubtitle: {
-    fontSize: 14,
-    color: colors.textSecondary,
-    marginTop: 4,
+  headerRight: {
+    width: 40,
   },
   
   // Categories
-  categoriesContainer: {
-    flexGrow: 0,
+  categoriesWrapper: {
+    backgroundColor: '#fff',
+    paddingVertical: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
   },
   categoriesContent: {
     paddingHorizontal: spacing.md,
-    paddingBottom: spacing.md,
     gap: spacing.sm,
   },
   categoryChip: {
@@ -438,62 +589,85 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.full,
-    backgroundColor: colors.surface,
-    borderWidth: 1,
+    backgroundColor: '#fff',
+    borderWidth: 1.5,
     borderColor: colors.border,
     marginRight: spacing.sm,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 3,
+    elevation: 2,
   },
   categoryChipText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: '600',
     color: colors.text,
   },
   categoryChipTextActive: {
     color: '#fff',
+    fontWeight: '700',
   },
 
   // Main Content
   mainContent: {
     flex: 1,
   },
+  scrollContent: {
+    paddingBottom: 100,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.md,
+  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
     color: colors.text,
-    marginBottom: spacing.md,
   },
 
   // Featured Section
   featuredSection: {
-    paddingVertical: spacing.md,
+    paddingTop: spacing.lg,
+    paddingBottom: spacing.md,
+    paddingLeft: spacing.md,
   },
   featuredScroll: {
-    paddingHorizontal: spacing.md,
+    paddingRight: spacing.md,
   },
   featuredCard: {
-    width: 280,
-    height: 200,
-    borderRadius: borderRadius.lg,
+    width: 300,
+    height: 220,
+    borderRadius: borderRadius.xl,
     overflow: 'hidden',
     marginRight: spacing.md,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 5,
   },
   featuredImage: {
     width: '100%',
     height: '100%',
   },
-  featuredOverlay: {
+  featuredGradient: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    padding: spacing.md,
+    padding: spacing.lg,
+    paddingTop: spacing.xl,
+    background: 'linear-gradient(to bottom, transparent, rgba(0,0,0,0.8))',
     backgroundColor: 'rgba(0,0,0,0.6)',
   },
   categoryBadge: {
     alignSelf: 'flex-start',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 4,
-    borderRadius: borderRadius.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: 6,
+    borderRadius: borderRadius.md,
     marginBottom: spacing.sm,
   },
   categoryBadgeText: {
@@ -501,54 +675,69 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#fff',
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   featuredTitle: {
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: '700',
     color: '#fff',
-    marginBottom: spacing.xs,
+    marginBottom: spacing.sm,
+    lineHeight: 24,
   },
   featuredMeta: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+  },
+  metaItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  metaDivider: {
+    width: 1,
+    height: 12,
+    backgroundColor: 'rgba(255,255,255,0.4)',
+    marginHorizontal: spacing.sm,
   },
   featuredAuthor: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.9)',
-  },
-  featuredDot: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.6)',
+    color: 'rgba(255,255,255,0.95)',
+    fontWeight: '500',
   },
   featuredReadTime: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.9)',
+    color: 'rgba(255,255,255,0.95)',
+    fontWeight: '500',
   },
 
   // Trending Tags
   trendingSection: {
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.lg,
+    backgroundColor: '#F9FAFB',
   },
-  tagsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+  tagsScroll: {
     gap: spacing.sm,
   },
   tag: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    backgroundColor: colors.primary + '10',
-    borderRadius: borderRadius.sm,
-    borderWidth: 1,
+    gap: 6,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    backgroundColor: '#fff',
+    borderRadius: borderRadius.full,
+    borderWidth: 1.5,
     borderColor: colors.primary + '30',
+    marginRight: spacing.sm,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   tagText: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '600',
     color: colors.primary,
   },
@@ -556,65 +745,79 @@ const styles = StyleSheet.create({
   // Articles List
   articlesSection: {
     padding: spacing.md,
-    paddingBottom: 100,
   },
   articleCard: {
     flexDirection: 'row',
-    backgroundColor: colors.surface,
-    borderRadius: borderRadius.md,
+    backgroundColor: '#fff',
+    borderRadius: borderRadius.xl,
     marginBottom: spacing.md,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 3,
   },
   articleImage: {
-    width: 120,
-    height: 120,
+    width: 130,
+    height: 160,
   },
   articleContent: {
     flex: 1,
     padding: spacing.md,
+    justifyContent: 'space-between',
   },
   articleCategoryBadge: {
     alignSelf: 'flex-start',
     paddingHorizontal: spacing.sm,
     paddingVertical: 4,
     borderRadius: borderRadius.sm,
-    marginBottom: spacing.xs,
   },
   articleCategoryText: {
     fontSize: 10,
     fontWeight: '700',
+    color: '#fff',
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   articleTitle: {
     fontSize: 15,
     fontWeight: '700',
     color: colors.text,
+    marginTop: spacing.xs,
     marginBottom: spacing.xs,
+    lineHeight: 21,
   },
   articleExcerpt: {
     fontSize: 13,
     color: colors.textSecondary,
+    lineHeight: 19,
     marginBottom: spacing.sm,
-    lineHeight: 18,
+  },
+  articleFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   articleMeta: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 4,
   },
   articleAuthor: {
     fontSize: 12,
     color: colors.textSecondary,
-  },
-  articleDot: {
-    fontSize: 12,
-    color: colors.textSecondary,
+    fontWeight: '500',
   },
   articleReadTime: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  articleReadTimeText: {
     fontSize: 12,
     color: colors.textSecondary,
+    fontWeight: '500',
   },
 
   // Article Modal
@@ -622,36 +825,38 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    backgroundColor: colors.surface,
-  },
-  backButton: {
-    padding: spacing.xs,
-  },
-  bookmarkButton: {
-    padding: spacing.xs,
-  },
   modalContent: {
     flex: 1,
   },
   modalImage: {
     width: '100%',
-    height: 250,
+    height: 300,
+  },
+  modalBackButton: {
+    position: 'absolute',
+    top: 50,
+    left: spacing.md,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   modalBody: {
     padding: spacing.lg,
+    backgroundColor: colors.background,
   },
   modalCategoryBadge: {
     alignSelf: 'flex-start',
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.sm,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.md,
     marginBottom: spacing.md,
   },
   modalCategoryText: {
@@ -659,13 +864,14 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#fff',
     textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   modalTitle: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '700',
     color: colors.text,
-    marginBottom: spacing.md,
-    lineHeight: 32,
+    marginBottom: spacing.lg,
+    lineHeight: 34,
   },
   modalMeta: {
     flexDirection: 'row',
@@ -681,6 +887,7 @@ const styles = StyleSheet.create({
   modalMetaText: {
     fontSize: 13,
     color: colors.textSecondary,
+    fontWeight: '500',
   },
   modalDivider: {
     height: 1,
@@ -691,29 +898,40 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: colors.text,
-    marginBottom: spacing.md,
-    lineHeight: 24,
+    marginBottom: spacing.lg,
+    lineHeight: 26,
     fontStyle: 'italic',
+    padding: spacing.md,
+    backgroundColor: colors.primary + '08',
+    borderLeftWidth: 4,
+    borderLeftColor: colors.primary,
+    borderRadius: borderRadius.md,
   },
   modalContentText: {
     fontSize: 15,
     color: colors.text,
-    lineHeight: 24,
+    lineHeight: 26,
     marginBottom: spacing.lg,
   },
   modalTags: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: spacing.sm,
-    marginTop: spacing.md,
+    marginTop: spacing.lg,
+    paddingTop: spacing.lg,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
   },
   modalTag: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    backgroundColor: colors.surface,
-    borderRadius: borderRadius.md,
+    backgroundColor: colors.primary + '10',
+    borderRadius: borderRadius.full,
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: colors.primary + '30',
   },
   modalTagText: {
     fontSize: 13,
