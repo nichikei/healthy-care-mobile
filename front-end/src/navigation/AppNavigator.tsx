@@ -4,6 +4,7 @@ import { View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { NavigatorScreenParams } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAuth } from '../context/AuthContext';
@@ -24,6 +25,7 @@ import SettingsScreen from '../screens/settings/SettingsScreen';
 
 // Stack Navigators
 import { UtilitiesStackNavigator } from './UtilitiesStackNavigator';
+import type { UtilitiesStackParamList } from './UtilitiesStackNavigator';
 
 // Types
 export type RootStackParamList = {
@@ -41,7 +43,7 @@ export type MainTabParamList = {
   Dashboard: undefined;
   FoodLog: undefined;
   Camera: undefined;
-  Utilities: undefined;
+  Utilities: NavigatorScreenParams<UtilitiesStackParamList>;
   Settings: undefined;
 };
 

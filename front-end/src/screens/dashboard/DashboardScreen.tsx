@@ -14,8 +14,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useFocusEffect, useNavigation, type NavigationProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 
@@ -25,6 +24,7 @@ import { colors, spacing, borderRadius } from '../../context/ThemeContext';
 import { StatCard } from '../../components/StatCard';
 import { NutritionChart } from '../../components/NutritionChart';
 import { MealCard } from '../../components/MealCard';
+import type { MainTabParamList } from '../../navigation/AppNavigator';
 
 // Import articles from Health Insights
 import type { Article } from '../healthInsights/HealthInsightsScreen';
@@ -116,17 +116,11 @@ interface MealItem {
   image?: string;
 }
 
-type RootStackParamList = {
-  FoodLog: undefined;
-  WorkoutLog: undefined;
-  HealthInsights: undefined;
-};
-
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type DashboardNavProp = NavigationProp<MainTabParamList>;
 
 export default function DashboardScreen() {
   const { user } = useAuth();
-  const navigation = useNavigation<NavigationProp>();
+  const navigation = useNavigation<DashboardNavProp>();
   const [todayStats, setTodayStats] = useState<DailyStatistics | null>(null);
   const [todayMeals, setTodayMeals] = useState<MealItem[]>([]);
   const [recentWorkouts, setRecentWorkouts] = useState<WorkoutLog[]>([]);
@@ -134,6 +128,11 @@ export default function DashboardScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [currentStreak, setCurrentStreak] = useState(7); // Mock data - sẽ lấy từ API sau
   const progressAnim = useRef(new Animated.Value(0)).current;
+
+  const goToFoodLog = () => navigation.navigate('FoodLog');
+  const goToExercises = () => navigation.navigate('Utilities', { screen: 'Exercises' });
+  const goToHealthInsights = () => navigation.navigate('Utilities', { screen: 'HealthInsights' });
+  const goToCalendar = () => navigation.navigate('Utilities', { screen: 'Calendar' });
 
   const today = format(new Date(), 'yyyy-MM-dd');
 
@@ -235,6 +234,12 @@ export default function DashboardScreen() {
       { protein: 0, carbs: 0, fat: 0, calories: 0 }
     );
   }, [todayMeals]);
+
+  const burned = todayStats?.calories_burned || 0;
+  const remaining = Math.max(tdee - totalNutrition.calories + burned, 0);
+  const proteinGoal = Math.round(tdee * 0.3 / 4);
+  const carbsGoal = Math.round(tdee * 0.4 / 4);
+  const fatGoal = Math.round(tdee * 0.3 / 9);
 
   // Animate progress bar
   useEffect(() => {
@@ -407,52 +412,108 @@ export default function DashboardScreen() {
           </View>
         </View>
 
-        {/* Stats Grid - 1 Row */}
-        <View style={styles.statsGrid}>
-          <View style={styles.statCard}>
-            <View style={[styles.statIcon, { backgroundColor: colors.primaryLight }]}>
-              <Ionicons name="body-outline" size={20} color={colors.primary} />
-            </View>
-            <Text style={styles.statValue}>{user?.weight_kg || '--'} kg</Text>
-            <Text style={styles.statLabel}>Cân nặng</Text>
-          </View>
-
-          <View style={styles.statCard}>
-            <View style={[styles.statIcon, { backgroundColor: '#E8F5E9' }]}>
-              <Ionicons name="analytics-outline" size={20} color="#4CAF50" />
-            </View>
-            <Text style={styles.statValue}>{bmi || '--'}</Text>
-            <Text style={styles.statLabel}>BMI</Text>
-          </View>
-
-          <View style={styles.statCard}>
-            <View style={[styles.statIcon, { backgroundColor: '#F3E8FF' }]}>
-              <Ionicons name="fast-food-outline" size={20} color={colors.protein} />
-            </View>
-            <Text style={styles.statValue}>{Math.round(totalNutrition.protein)}g</Text>
-            <Text style={styles.statLabel}>Protein</Text>
-          </View>
-
-          <View style={styles.statCard}>
-            <View style={[styles.statIcon, { backgroundColor: '#FFF4E6' }]}>
-              <Ionicons name="nutrition-outline" size={20} color={colors.carbs} />
-            </View>
-            <Text style={styles.statValue}>{Math.round(totalNutrition.carbs)}g</Text>
-            <Text style={styles.statLabel}>Carbs</Text>
-          </View>
-        </View>
-
         {/* Nutrition Chart */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Dinh dưỡng hôm nay</Text>
           <View style={styles.chartCard}>
-            <NutritionChart
-              protein={totalNutrition.protein}
-              carbs={totalNutrition.carbs}
-              fat={totalNutrition.fat}
-              calories={totalNutrition.calories}
-              tdee={tdee}
-            />
+            <View style={styles.chartHeader}>
+              <View>
+                <Text style={styles.chartSubLabel}>Hôm nay</Text>
+                <Text style={styles.chartTitleValue}>{remaining} kcal còn lại</Text>
+              </View>
+              <View style={styles.goalPill}>
+                <Ionicons name="flame-outline" size={16} color={colors.primary} />
+                <Text style={styles.goalText}>{tdee} kcal mục tiêu</Text>
+              </View>
+            </View>
+
+            <View style={styles.kcalRow}>
+              <View style={styles.sideStat}>
+                <Text style={styles.sideStatValue}>{totalNutrition.calories || 0}</Text>
+                <Text style={styles.sideStatLabel}>Đã nạp</Text>
+              </View>
+              <View style={styles.kcalCircle}>
+                <View style={styles.kcalInner}>
+                  <Text style={styles.kcalNumber}>{remaining}</Text>
+                  <Text style={styles.kcalLabel}>kcal còn lại</Text>
+                </View>
+              </View>
+              <View style={styles.sideStat}>
+                <Text style={styles.sideStatValue}>{burned}</Text>
+                <Text style={styles.sideStatLabel}>Đã đốt</Text>
+              </View>
+            </View>
+
+            <View style={styles.macroRow}>
+              <View style={styles.macroCircle}>
+                <Text style={styles.macroCircleValue}>{Math.round(totalNutrition.carbs)}</Text>
+                <Text style={styles.macroCircleSub}>/ {carbsGoal} g</Text>
+                <Text style={styles.macroCircleLabel}>Carbs</Text>
+              </View>
+              <View style={styles.macroCircle}>
+                <Text style={styles.macroCircleValue}>{Math.round(totalNutrition.protein)}</Text>
+                <Text style={styles.macroCircleSub}>/ {proteinGoal} g</Text>
+                <Text style={styles.macroCircleLabel}>Protein</Text>
+              </View>
+              <View style={styles.macroCircle}>
+                <Text style={styles.macroCircleValue}>{Math.round(totalNutrition.fat)}</Text>
+                <Text style={styles.macroCircleSub}>/ {fatGoal} g</Text>
+                <Text style={styles.macroCircleLabel}>Fat</Text>
+              </View>
+            </View>
+
+            <View style={styles.nutritionStatsGrid}>
+              <View style={styles.nutritionStatCard}>
+                <View style={[styles.statIcon, { backgroundColor: colors.primaryLight }]}>
+                  <Ionicons name="body-outline" size={20} color={colors.primary} />
+                </View>
+                <Text style={styles.nutritionStatValue}>{user?.weight_kg || '--'} kg</Text>
+                <Text style={styles.nutritionStatLabel}>Cân nặng</Text>
+              </View>
+              <View style={styles.nutritionStatCard}>
+                <View style={[styles.statIcon, { backgroundColor: '#E8F5E9' }]}>
+                  <Ionicons name="analytics-outline" size={20} color="#4CAF50" />
+                </View>
+                <Text style={styles.nutritionStatValue}>{bmi || '--'}</Text>
+                <Text style={styles.nutritionStatLabel}>BMI</Text>
+              </View>
+              <View style={styles.nutritionStatCard}>
+                <View style={[styles.statIcon, { backgroundColor: '#F3E8FF' }]}>
+                  <Ionicons name="fast-food-outline" size={20} color={colors.protein} />
+                </View>
+                <Text style={styles.nutritionStatValue}>{Math.round(totalNutrition.protein)}g</Text>
+                <Text style={styles.nutritionStatLabel}>Protein</Text>
+              </View>
+              <View style={styles.nutritionStatCard}>
+                <View style={[styles.statIcon, { backgroundColor: '#FFF4E6' }]}>
+                  <Ionicons name="nutrition-outline" size={20} color={colors.carbs} />
+                </View>
+                <Text style={styles.nutritionStatValue}>{Math.round(totalNutrition.carbs)}g</Text>
+                <Text style={styles.nutritionStatLabel}>Carbs</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Calendar quick access */}
+        <View style={styles.section}>
+          <View style={styles.calendarCard}>
+            <View style={styles.calendarHeader}>
+              <View>
+                <Text style={styles.calendarLabel}>Lịch sức khỏe</Text>
+                <Text style={styles.calendarDate}>{format(new Date(), 'EEEE, d MMM yyyy')}</Text>
+              </View>
+              <TouchableOpacity style={styles.calendarBtn} onPress={goToCalendar}>
+                <Ionicons name="calendar" size={18} color="#fff" />
+                <Text style={styles.calendarBtnText}>Mở lịch</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.calendarRow}>
+              <Ionicons name="alarm-outline" size={18} color={colors.primary} />
+              <Text style={styles.calendarRowText}>
+                Theo dõi lịch tập và nhắc uống nước trong một nơi.
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -460,7 +521,7 @@ export default function DashboardScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Bài tập gần đây</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('WorkoutLog')}>
+            <TouchableOpacity onPress={goToExercises}>
               <Text style={styles.seeAllText}>Xem tất cả</Text>
             </TouchableOpacity>
           </View>
@@ -492,7 +553,7 @@ export default function DashboardScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Bữa ăn hôm nay</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('FoodLog')}>
+            <TouchableOpacity onPress={goToFoodLog}>
               <Text style={styles.seeAllText}>Xem tất cả</Text>
             </TouchableOpacity>
           </View>
@@ -524,7 +585,7 @@ export default function DashboardScreen() {
         <View style={styles.section}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>📚 Kiến thức sức khỏe</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('HealthInsights')}>
+            <TouchableOpacity onPress={goToHealthInsights}>
               <Text style={styles.seeAllText}>Xem tất cả</Text>
             </TouchableOpacity>
           </View>
@@ -1033,16 +1094,242 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
   },
   chartCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.88)',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: borderRadius.xl,
+    padding: spacing.lg,
+    borderWidth: 1,
+    borderColor: 'rgba(139, 92, 246, 0.1)',
+    shadowColor: '#8B5CF6',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+  chartHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.md,
+  },
+  chartSubLabel: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    fontWeight: '600',
+    letterSpacing: 0.2,
+    textTransform: 'uppercase',
+  },
+  chartTitleValue: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: colors.text,
+    letterSpacing: -0.3,
+  },
+  goalPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.full,
+    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  goalText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: colors.primary,
+  },
+  kcalRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: spacing.lg,
+    paddingHorizontal: spacing.xs,
+  },
+  sideStat: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  sideStatValue: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: colors.text,
+  },
+  sideStatLabel: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  kcalCircle: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    borderWidth: 8,
+    borderColor: colors.primary + 'AA',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(16,185,129,0.04)',
+    marginHorizontal: spacing.md,
+  },
+  kcalInner: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  kcalNumber: {
+    fontSize: 28,
+    fontWeight: '900',
+    color: colors.text,
+  },
+  kcalLabel: {
+    fontSize: 13,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  chartCenter: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: spacing.md,
+  },
+  macroLegend: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: spacing.md,
+    marginBottom: spacing.md,
+    paddingHorizontal: spacing.xs,
+  },
+  macroItem: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: spacing.xs,
+    flex: 1,
+  },
+  macroDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  macroLabel: {
+    fontSize: 11,
+    color: colors.textSecondary,
+    fontWeight: '600',
+  },
+  macroValue: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: colors.text,
+  },
+  macroRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: spacing.md,
+    marginBottom: spacing.lg,
+  },
+  macroCircle: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.lg,
+    borderWidth: 1,
+    borderColor: colors.border,
+    backgroundColor: colors.background,
+  },
+  macroCircleValue: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: colors.text,
+  },
+  macroCircleSub: {
+    fontSize: 11,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  macroCircleLabel: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 4,
+    fontWeight: '600',
+  },
+  calendarCard: {
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: borderRadius.lg,
     padding: spacing.md,
     borderWidth: 1,
-    borderColor: 'rgba(139, 92, 246, 0.15)',
-    shadowColor: '#8B5CF6',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.12,
-    shadowRadius: 10,
-    elevation: 4,
+    borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  calendarHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: spacing.sm,
+  },
+  calendarLabel: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  calendarDate: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: colors.text,
+  },
+  calendarBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.full,
+  },
+  calendarBtnText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  calendarRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  calendarRowText: {
+    fontSize: 13,
+    color: colors.textSecondary,
+    flex: 1,
+  },
+  nutritionStatsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+    justifyContent: 'space-between',
+  },
+  nutritionStatCard: {
+    width: '48%',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: borderRadius.md,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+    gap: spacing.xs,
+  },
+  nutritionStatValue: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: colors.text,
+  },
+  nutritionStatLabel: {
+    fontSize: 11,
+    color: colors.textSecondary,
+    textAlign: 'center',
   },
   // Workout Card
   workoutCard: {
