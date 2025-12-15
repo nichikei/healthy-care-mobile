@@ -307,7 +307,13 @@ export default function DashboardScreen() {
                 </Text>
                 <Text style={styles.userNameText}>{user?.name || 'Người dùng'}</Text>
                 <Text style={styles.userGoalText}>
-                  Mục tiêu: {user?.goal === 'lose_weight' ? 'Giảm cân' : user?.goal === 'gain_muscle' ? 'Tăng cơ' : 'Duy trì sức khỏe'}
+                  Mục tiêu: {
+                    user?.goal === 'lose_weight' ? 'Giảm cân' : 
+                    user?.goal === 'maintain_weight' ? 'Duy trì cân nặng' :
+                    user?.goal === 'gain_weight' ? 'Tăng cân' :
+                    user?.goal === 'build_muscle' ? 'Tăng cơ' : 
+                    'Duy trì sức khỏe'
+                  }
                 </Text>
               </View>
             </View>
@@ -332,81 +338,12 @@ export default function DashboardScreen() {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
 
-        {/* Summary Card với Progress Bar */}
-        <View style={styles.summaryCard}>
-          <View style={styles.summaryHeader}>
-            <Text style={styles.summaryTitle}>Calo hôm nay</Text>
-            <View style={styles.percentBadge}>
-              <Text style={styles.percentText}>{calorieIntakePercent}%</Text>
-            </View>
-          </View>
-
-          {/* Progress Bar */}
-          <View style={styles.progressContainer}>
-            <View style={styles.progressBackground}>
-              <Animated.View
-                style={[
-                  styles.progressBar,
-                  {
-                    width: progressAnim.interpolate({
-                      inputRange: [0, 100],
-                      outputRange: ['0%', '100%'],
-                      extrapolate: 'clamp',
-                    }),
-                  },
-                ]}
-              >
-                <LinearGradient
-                  colors={
-                    calorieIntakePercent > 100
-                      ? ['#f59e0b', '#ef4444']
-                      : calorieIntakePercent >= 80
-                      ? ['#10b981', '#059669']
-                      : ['#3b82f6', '#10b981']
-                  }
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={styles.progressGradient}
-                />
-              </Animated.View>
-            </View>
-          </View>
-
-          {/* Motivational Message */}
-          <View style={styles.motivationContainer}>
-            <Text style={styles.motivationIcon}>{message.icon}</Text>
-            <Text style={[styles.motivationText, { color: message.color }]}>
-              {message.text}
-            </Text>
-          </View>
-
-          {/* Stats Row */}
-          <View style={styles.summaryRow}>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{totalNutrition.calories || 0}</Text>
-              <Text style={styles.summaryLabel}>Đã nạp</Text>
-            </View>
-            <View style={styles.summaryDivider} />
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{tdee}</Text>
-              <Text style={styles.summaryLabel}>Mục tiêu</Text>
-            </View>
-            <View style={styles.summaryDivider} />
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{todayStats?.calories_burned || 0}</Text>
-              <Text style={styles.summaryLabel}>Đã đốt</Text>
-            </View>
-          </View>
-        </View>
-
         {/* Nutrition Chart */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Dinh dưỡng hôm nay</Text>
+        <View style={[styles.section, { marginTop: spacing.sm }]}>
           <View style={styles.chartCard}>
             <View style={styles.chartHeader}>
               <View>
                 <Text style={styles.chartSubLabel}>Hôm nay</Text>
-                <Text style={styles.chartTitleValue}>{remaining} kcal còn lại</Text>
               </View>
               <View style={styles.goalPill}>
                 <Ionicons name="flame-outline" size={16} color={colors.primary} />
@@ -976,6 +913,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: colors.text,
     letterSpacing: -0.3,
+    marginBottom: spacing.md,
   },
   seeAllText: {
     fontSize: 14,
@@ -1123,17 +1061,20 @@ const styles = StyleSheet.create({
   },
   sideStat: {
     alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
   },
   sideStatValue: {
     fontSize: 18,
     fontWeight: '800',
     color: colors.text,
+    textAlign: 'center',
   },
   sideStatLabel: {
     fontSize: 12,
     color: colors.textSecondary,
     marginTop: 2,
+    textAlign: 'center',
   },
   kcalCircle: {
     width: 150,
