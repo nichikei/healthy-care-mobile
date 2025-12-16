@@ -18,6 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation, type NavigationProp } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
+import { vi } from 'date-fns/locale';
 
 import { useAuth } from '../../context/AuthContext';
 import { api, type User, type DailyStatistics, type FoodLog, type WorkoutLog } from '../../services/api';
@@ -530,7 +531,7 @@ export default function DashboardScreen() {
           <View style={styles.calendarCard}>
             <View style={styles.calendarDateHeader}>
               <Ionicons name="calendar-outline" size={20} color={colors.primary} />
-              <Text style={styles.calendarDate}>{format(new Date(), 'EEEE, d MMMM yyyy')}</Text>
+              <Text style={styles.calendarDate}>{format(new Date(), 'EEEE, d MMMM yyyy', { locale: vi })}</Text>
             </View>
             {todayEvents.length > 0 ? (
               <View style={styles.eventsContainer}>

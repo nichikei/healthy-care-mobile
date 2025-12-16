@@ -512,7 +512,7 @@ export default function CalendarScreen() {
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.title}>Lịch sức khỏe</Text>
-        <View style={styles.addButton} />
+        <View style={styles.headerRight} />
       </View>
       
       {/* Month Navigation */}
@@ -567,18 +567,17 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: spacing.sm,
+    marginLeft: -8,
   },
   title: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 18,
+    fontWeight: '600',
     color: '#fff',
-    letterSpacing: 0.3,
     flex: 1,
     textAlign: 'center',
-    marginRight: -40,
   },
-  addButton: {
-    padding: spacing.sm,
+  headerRight: {
+    width: 40,
   },
   monthNav: {
     flexDirection: 'row',

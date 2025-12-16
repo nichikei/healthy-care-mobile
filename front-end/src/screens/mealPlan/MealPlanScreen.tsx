@@ -48,61 +48,60 @@ const generateWeekDates = () => {
 
 const WEEK_DATES = generateWeekDates();
 
-const HEALTHY_PLAN: DayPlan[] = [
-  {
-    ...WEEK_DATES[0],
-    breakfast: { name: 'Bánh pancake protein với dâu', calories: 540, protein: 30 },
-    lunch: { name: 'Gà nướng quinoa', calories: 680, protein: 48 },
-    snack: { name: 'Sữa chua Hy Lạp + Hạnh nhân', calories: 220, protein: 18 },
-    dinner: { name: 'Cá hồi & Khoai lang', calories: 650, protein: 45 },
-  },
-  {
-    ...WEEK_DATES[1],
-    breakfast: { name: 'Bánh mì bơ trứng', calories: 520, protein: 24 },
-    lunch: { name: 'Gà tây cuộn rau', calories: 580, protein: 42 },
-    snack: { name: 'Sinh tố protein + Chuối', calories: 280, protein: 30 },
-    dinner: { name: 'Bò xào bông cải xanh', calories: 670, protein: 52 },
-  },
-  {
-    ...WEEK_DATES[2],
-    breakfast: { name: 'Yến mạch ngâm qua đêm', calories: 490, protein: 20 },
-    lunch: { name: 'Salad cá ngừ đậu gà', calories: 640, protein: 44 },
-    snack: { name: 'Phô mai cottage + Dứa', calories: 190, protein: 22 },
-    dinner: { name: 'Gà nướng & Rau củ', calories: 660, protein: 50 },
-  },
-  {
-    ...WEEK_DATES[3],
-    breakfast: { name: 'Trứng tráng rau bina', calories: 510, protein: 28 },
-    lunch: { name: 'Tôm mì zucchini', calories: 560, protein: 46 },
-    snack: { name: 'Táo + Bơ đậu phộng', calories: 240, protein: 8 },
-    dinner: { name: 'Đậu phụ xào rau', calories: 610, protein: 36 },
-  },
-  {
-    ...WEEK_DATES[4],
-    breakfast: { name: 'Sữa chua Parfait', calories: 530, protein: 32 },
-    lunch: { name: 'Gà Buddha Bowl', calories: 700, protein: 50 },
-    snack: { name: 'Cà rốt + Hummus', calories: 180, protein: 6 },
-    dinner: { name: 'Cá tuyết nướng & Măng tây', calories: 600, protein: 48 },
-  },
-  {
-    ...WEEK_DATES[5],
-    breakfast: { name: 'Smoothie bowl xanh', calories: 500, protein: 28 },
-    lunch: { name: 'Súp đậu lăng + Bánh mì', calories: 620, protein: 30 },
-    snack: { name: 'Trứng luộc + Dưa chuột', calories: 200, protein: 16 },
-    dinner: { name: 'Viên gà tây mì zoodle', calories: 650, protein: 52 },
-  },
-  {
-    ...WEEK_DATES[6],
-    breakfast: { name: 'Chia pudding xoài', calories: 480, protein: 18 },
-    lunch: { name: 'Cá hồi Poke Bowl', calories: 710, protein: 46 },
-    snack: { name: 'Dâu tây + Hạt óc chó', calories: 230, protein: 5 },
-    dinner: { name: 'Salad gà nướng', calories: 670, protein: 54 },
-  },
+// Template 1: High Protein Plan
+const PLAN_1: DayPlan[] = [
+  { ...WEEK_DATES[0], breakfast: { name: 'Bánh pancake protein với dâu', calories: 540, protein: 30 }, lunch: { name: 'Gà nướng quinoa', calories: 680, protein: 48 }, snack: { name: 'Sữa chua Hy Lạp + Hạnh nhân', calories: 220, protein: 18 }, dinner: { name: 'Cá hồi & Khoai lang', calories: 650, protein: 45 } },
+  { ...WEEK_DATES[1], breakfast: { name: 'Bánh mì bơ trứng', calories: 520, protein: 24 }, lunch: { name: 'Gà tây cuộn rau', calories: 580, protein: 42 }, snack: { name: 'Sinh tố protein + Chuối', calories: 280, protein: 30 }, dinner: { name: 'Bò xào bông cải xanh', calories: 670, protein: 52 } },
+  { ...WEEK_DATES[2], breakfast: { name: 'Yến mạch ngâm qua đêm', calories: 490, protein: 20 }, lunch: { name: 'Salad cá ngừ đậu gà', calories: 640, protein: 44 }, snack: { name: 'Phô mai cottage + Dứa', calories: 190, protein: 22 }, dinner: { name: 'Gà nướng & Rau củ', calories: 660, protein: 50 } },
+  { ...WEEK_DATES[3], breakfast: { name: 'Trứng tráng rau bina', calories: 510, protein: 28 }, lunch: { name: 'Tôm mì zucchini', calories: 560, protein: 46 }, snack: { name: 'Táo + Bơ đậu phộng', calories: 240, protein: 8 }, dinner: { name: 'Đậu phụ xào rau', calories: 610, protein: 36 } },
+  { ...WEEK_DATES[4], breakfast: { name: 'Sữa chua Parfait', calories: 530, protein: 32 }, lunch: { name: 'Gà Buddha Bowl', calories: 700, protein: 50 }, snack: { name: 'Cà rốt + Hummus', calories: 180, protein: 6 }, dinner: { name: 'Cá tuyết nướng & Măng tây', calories: 600, protein: 48 } },
+  { ...WEEK_DATES[5], breakfast: { name: 'Smoothie bowl xanh', calories: 500, protein: 28 }, lunch: { name: 'Súp đậu lăng + Bánh mì', calories: 620, protein: 30 }, snack: { name: 'Trứng luộc + Dưa chuột', calories: 200, protein: 16 }, dinner: { name: 'Viên gà tây mì zoodle', calories: 650, protein: 52 } },
+  { ...WEEK_DATES[6], breakfast: { name: 'Chia pudding xoài', calories: 480, protein: 18 }, lunch: { name: 'Cá hồi Poke Bowl', calories: 710, protein: 46 }, snack: { name: 'Dâu tây + Hạt óc chó', calories: 230, protein: 5 }, dinner: { name: 'Salad gà nướng', calories: 670, protein: 54 } },
 ];
+
+// Template 2: Mediterranean Diet
+const PLAN_2: DayPlan[] = [
+  { ...WEEK_DATES[0], breakfast: { name: 'Bánh mì nguyên cám bơ đậu', calories: 450, protein: 15 }, lunch: { name: 'Salad Hy Lạp với phô mai feta', calories: 520, protein: 22 }, snack: { name: 'Olive + Cà chua bi', calories: 160, protein: 4 }, dinner: { name: 'Cá thu nướng với chanh', calories: 580, protein: 42 } },
+  { ...WEEK_DATES[1], breakfast: { name: 'Sữa chua với mật ong & hạt', calories: 420, protein: 18 }, lunch: { name: 'Gà nướng thảo mộc', calories: 580, protein: 45 }, snack: { name: 'Hummus + Crudités', calories: 190, protein: 7 }, dinner: { name: 'Mực nướng kiểu Địa Trung Hải', calories: 550, protein: 38 } },
+  { ...WEEK_DATES[2], breakfast: { name: 'Trứng luộc + Bánh mì nướng', calories: 440, protein: 20 }, lunch: { name: 'Súp minestrone', calories: 480, protein: 18 }, snack: { name: 'Quả sung khô + Hạnh nhân', calories: 210, protein: 6 }, dinner: { name: 'Tôm nướng với rau nướng', calories: 570, protein: 40 } },
+  { ...WEEK_DATES[3], breakfast: { name: 'Yến mạch với quả mọng', calories: 460, protein: 16 }, lunch: { name: 'Bạch tuộc nướng salad', calories: 540, protein: 35 }, snack: { name: 'Cà rốt baby + Tzatziki', calories: 170, protein: 5 }, dinner: { name: 'Cá ngừ áp chảo', calories: 600, protein: 44 } },
+  { ...WEEK_DATES[4], breakfast: { name: 'Smoothie xanh với bơ', calories: 480, protein: 14 }, lunch: { name: 'Tabouleh với gà nướng', calories: 560, protein: 38 }, snack: { name: 'Phô mai + Nho', calories: 200, protein: 8 }, dinner: { name: 'Moussaka chay', calories: 520, protein: 24 } },
+  { ...WEEK_DATES[5], breakfast: { name: 'Bánh mì pita với phô mai dê', calories: 440, protein: 16 }, lunch: { name: 'Salad Caesar Hy Lạp', calories: 550, protein: 32 }, snack: { name: 'Dưa chuột + Feta', calories: 150, protein: 6 }, dinner: { name: 'Cá trắng hấp thảo mộc', calories: 540, protein: 42 } },
+  { ...WEEK_DATES[6], breakfast: { name: 'Pancake chuối yến mạch', calories: 470, protein: 18 }, lunch: { name: 'Falafels với salad', calories: 580, protein: 20 }, snack: { name: 'Oliu + Cà chua', calories: 160, protein: 4 }, dinner: { name: 'Gà nướng chanh thảo mộc', calories: 590, protein: 46 } },
+];
+
+// Template 3: Asian Fusion
+const PLAN_3: DayPlan[] = [
+  { ...WEEK_DATES[0], breakfast: { name: 'Phở gà', calories: 480, protein: 32 }, lunch: { name: 'Cơm gà Hải Nam', calories: 620, protein: 40 }, snack: { name: 'Chè đậu xanh', calories: 200, protein: 8 }, dinner: { name: 'Cá kho tộ', calories: 560, protein: 38 } },
+  { ...WEEK_DATES[1], breakfast: { name: 'Bánh mì trứng ốp la', calories: 520, protein: 24 }, lunch: { name: 'Bún chả', calories: 580, protein: 35 }, snack: { name: 'Sữa đậu nành + Bánh gạo', calories: 180, protein: 10 }, dinner: { name: 'Gà xào sả ớt', calories: 600, protein: 42 } },
+  { ...WEEK_DATES[2], breakfast: { name: 'Cháo gà', calories: 440, protein: 28 }, lunch: { name: 'Canh chua cá', calories: 500, protein: 32 }, snack: { name: 'Mít + Nước dừa', calories: 220, protein: 4 }, dinner: { name: 'Đậu phụ sốt cà', calories: 520, protein: 26 } },
+  { ...WEEK_DATES[3], breakfast: { name: 'Xôi gà', calories: 560, protein: 30 }, lunch: { name: 'Bò lúc lắc', calories: 640, protein: 45 }, snack: { name: 'Chè thái', calories: 240, protein: 6 }, dinner: { name: 'Tôm rim', calories: 580, protein: 40 } },
+  { ...WEEK_DATES[4], breakfast: { name: 'Bánh cuốn', calories: 420, protein: 18 }, lunch: { name: 'Mì xào hải sản', calories: 660, protein: 38 }, snack: { name: 'Smoothie xoài', calories: 210, protein: 8 }, dinner: { name: 'Cá thu sốt', calories: 570, protein: 42 } },
+  { ...WEEK_DATES[5], breakfast: { name: 'Bánh bao nhân thịt', calories: 480, protein: 22 }, lunch: { name: 'Cơm tấm sườn', calories: 680, protein: 40 }, snack: { name: 'Sương sáo', calories: 180, protein: 4 }, dinner: { name: 'Gỏi cuốn tôm', calories: 450, protein: 28 } },
+  { ...WEEK_DATES[6], breakfast: { name: 'Bánh xèo', calories: 520, protein: 26 }, lunch: { name: 'Bún riêu', calories: 580, protein: 32 }, snack: { name: 'Chè bưởi', calories: 200, protein: 6 }, dinner: { name: 'Mực xào sa tế', calories: 590, protein: 44 } },
+];
+
+// Template 4: Low Carb
+const PLAN_4: DayPlan[] = [
+  { ...WEEK_DATES[0], breakfast: { name: 'Trứng chiên bơ phô mai', calories: 420, protein: 28 }, lunch: { name: 'Salad gà bơ', calories: 540, protein: 42 }, snack: { name: 'Celery + Bơ hạnh nhân', calories: 150, protein: 6 }, dinner: { name: 'Steak bò + Rau xào', calories: 620, protein: 48 } },
+  { ...WEEK_DATES[1], breakfast: { name: 'Omelet nấm phô mai', calories: 440, protein: 30 }, lunch: { name: 'Cá hồi nướng rau', calories: 580, protein: 44 }, snack: { name: 'Phô mai que + Dưa leo', calories: 140, protein: 8 }, dinner: { name: 'Gà nướng bơ tỏi', calories: 590, protein: 46 } },
+  { ...WEEK_DATES[2], breakfast: { name: 'Bacon + Trứng', calories: 460, protein: 32 }, lunch: { name: 'Salad Cobb', calories: 560, protein: 40 }, snack: { name: 'Hạt macadamia', calories: 200, protein: 4 }, dinner: { name: 'Sườn nướng', calories: 640, protein: 42 } },
+  { ...WEEK_DATES[3], breakfast: { name: 'Smoothie bơ protein', calories: 480, protein: 35 }, lunch: { name: 'Gà rôti + Salad', calories: 570, protein: 45 }, snack: { name: 'Trứng luộc + Mayonnaise', calories: 180, protein: 12 }, dinner: { name: 'Cá thu nướng bơ', calories: 600, protein: 44 } },
+  { ...WEEK_DATES[4], breakfast: { name: 'Sốt xúc xích bơ phô mai', calories: 500, protein: 28 }, lunch: { name: 'Tôm xào bơ tỏi', calories: 550, protein: 40 }, snack: { name: 'Olive + Phô mai', calories: 160, protein: 6 }, dinner: { name: 'Thịt hầm nấm', calories: 610, protein: 46 } },
+  { ...WEEK_DATES[5], breakfast: { name: 'Chia pudding dừa', calories: 420, protein: 18 }, lunch: { name: 'Burger bò không bánh', calories: 620, protein: 48 }, snack: { name: 'Cá ngừ đóng hộp', calories: 190, protein: 26 }, dinner: { name: 'Gà nướng + Bông cải', calories: 580, protein: 44 } },
+  { ...WEEK_DATES[6], breakfast: { name: 'Pancake hạnh nhân', calories: 460, protein: 24 }, lunch: { name: 'Salad tôm bơ', calories: 540, protein: 38 }, snack: { name: 'Bơ + Hạt chia', calories: 210, protein: 8 }, dinner: { name: 'Cá hồi áp chảo', calories: 600, protein: 46 } },
+];
+
+const MEAL_PLAN_TEMPLATES = [PLAN_1, PLAN_2, PLAN_3, PLAN_4];
+
+const getRandomPlan = () => {
+  const randomIndex = Math.floor(Math.random() * MEAL_PLAN_TEMPLATES.length);
+  return MEAL_PLAN_TEMPLATES[randomIndex];
+};
 
 export default function MealPlanScreen() {
   const navigation = useNavigation();
-  const [plan, setPlan] = useState<DayPlan[]>(HEALTHY_PLAN);
+  const [plan, setPlan] = useState<DayPlan[]>(PLAN_1);
   const [selectedDay, setSelectedDay] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -154,6 +153,24 @@ export default function MealPlanScreen() {
     }
   };
 
+  const showErrorDialog = () => {
+    Alert.alert(
+      'API đang lỗi',
+      'Không thể kết nối với AI. Bạn có muốn sử dụng template có sẵn không?',
+      [
+        { text: 'Hủy', style: 'cancel' },
+        {
+          text: 'Dùng template',
+          onPress: () => {
+            const randomPlan = getRandomPlan();
+            setPlan(randomPlan);
+            setShowForm(false);
+          },
+        },
+      ]
+    );
+  };
+
   const handleGeneratePlan = async () => {
     try {
       setLoading(true);
@@ -161,35 +178,26 @@ export default function MealPlanScreen() {
       const result = await api.generateMealPlan({
         allergies: allergies.trim() || undefined,
         preferences: preferences.trim() || undefined,
+        timestamp: Date.now(),
       });
 
       if (result.mealPlan && Array.isArray(result.mealPlan)) {
-        setPlan(result.mealPlan);
-        setShowForm(false);
-        Alert.alert(
-          'Thành công',
-          `Đã tạo kế hoạch ăn uống ${result.mealPlan.length} ngày với mục tiêu ${result.targetCalories} kcal/ngày!`
-        );
+        if (result.source === 'fallback') {
+          showErrorDialog();
+        } else {
+          setPlan(result.mealPlan);
+          setShowForm(false);
+          Alert.alert(
+            'Thành công',
+            `Đã tạo kế hoạch ăn uống ${result.mealPlan.length} ngày với mục tiêu ${result.targetCalories} kcal/ngày!`
+          );
+        }
       } else {
         throw new Error('Invalid meal plan format');
       }
     } catch (error: any) {
       console.error('Generate meal plan error:', error);
-      Alert.alert(
-        'Lỗi',
-        'Không thể tạo kế hoạch AI. Bạn muốn sử dụng kế hoạch mẫu không?',
-        [
-          { text: 'Hủy', style: 'cancel' },
-          {
-            text: 'Dùng mẫu',
-            onPress: () => {
-              setPlan(HEALTHY_PLAN);
-              setShowForm(false);
-              Alert.alert('Thành công', 'Đã tải kế hoạch mẫu!');
-            },
-          },
-        ]
-      );
+      showErrorDialog();
     } finally {
       setLoading(false);
     }
@@ -265,7 +273,7 @@ export default function MealPlanScreen() {
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Text style={styles.title}>Kế hoạch 7 ngày</Text>
-        <View style={styles.headerSpacer} />
+        <View style={styles.headerRight} />
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -283,10 +291,10 @@ export default function MealPlanScreen() {
                 onPress={() => setSelectedDay(index)}
               >
                 <Text style={[styles.dayName, selectedDay === index && styles.dayNameActive]}>
-                  {day.day.substring(0, 3)}
+                  Ngày
                 </Text>
                 <Text style={[styles.dayDate, selectedDay === index && styles.dayDateActive]}>
-                  {day.date.split(' ')[0]}
+                  {index + 1}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -411,17 +419,16 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: spacing.sm,
+    marginLeft: -8,
   },
   title: {
-    fontSize: 20,
-    fontWeight: '700',
+    fontSize: 18,
+    fontWeight: '600',
     color: '#fff',
-    letterSpacing: 0.3,
     flex: 1,
     textAlign: 'center',
-    marginRight: -40,
   },
-  headerSpacer: {
+  headerRight: {
     width: 40,
   },
   content: {
