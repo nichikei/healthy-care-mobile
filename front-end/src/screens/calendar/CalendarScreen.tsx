@@ -1,5 +1,5 @@
 // src/screens/calendar/CalendarScreen.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,97 +10,22 @@ import {
   TextInput,
   Alert,
   StatusBar,
+  Platform,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, isSameMonth } from 'date-fns';
 import { vi } from 'date-fns/locale';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { colors, spacing, borderRadius } from '../../context/ThemeContext';
-
-type EventCategory = 'meal' | 'workout' | 'appointment';
-
-interface CalendarEvent {
-  id: string;
-  title: string;
-  category: EventCategory;
-  date: Date;
-  time: string;
-  notes?: string;
-}
-
-const SAMPLE_EVENTS: CalendarEvent[] = [
-  {
-    id: '1',
-    title: 'Bữa sáng: Yến mạch + trứng',
-    category: 'meal',
-    date: new Date(2025, 11, 13, 7, 30),
-    time: '07:30',
-    notes: '380 kcal, 24g protein',
-  },
-  {
-    id: '2',
-    title: 'Chạy bộ buổi sáng',
-    category: 'workout',
-    date: new Date(2025, 11, 13, 6, 0),
-    time: '06:00',
-    notes: '5km, 30 phút',
-  },
-  {
-    id: '3',
-    title: 'Khám sức khỏe định kỳ',
-    category: 'appointment',
-    date: new Date(2025, 11, 15, 9, 0),
-    time: '09:00',
-    notes: 'Bệnh viện Đa khoa',
-  },
-  {
-    id: '4',
-    title: 'Bữa trưa: Gà nướng quinoa',
-    category: 'meal',
-    date: new Date(2025, 11, 13, 12, 0),
-    time: '12:00',
-    notes: '680 kcal, 48g protein',
-  },
-  {
-    id: '5',
-    title: 'Gym - Upper body',
-    category: 'workout',
-    date: new Date(2025, 11, 14, 18, 0),
-    time: '18:00',
-    notes: 'Ngực, vai, tay',
-  },
-  {
-    id: '6',
-    title: 'Bữa tối: Cá hồi khoai lang',
-    category: 'meal',
-    date: new Date(2025, 11, 14, 19, 30),
-    time: '19:30',
-    notes: '650 kcal, 45g protein',
-  },
-  {
-    id: '7',
-    title: 'Yoga buổi sáng',
-    category: 'workout',
-    date: new Date(2025, 11, 16, 6, 30),
-    time: '06:30',
-    notes: '45 phút stretching',
-  },
-  {
-    id: '8',
-    title: 'Gặp huấn luyện viên',
-    category: 'appointment',
-    date: new Date(2025, 11, 17, 10, 0),
-    time: '10:00',
-    notes: 'Tư vấn chế độ tập',
-  },
-];
+import { eventStorage, type CalendarEvent, type EventCategory } from '../../services/eventStorage';
 
 export default function CalendarScreen() {
   const navigation = useNavigation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [events, setEvents] = useState<CalendarEvent[]>(SAMPLE_EVENTS);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEventDetail, setShowEventDetail] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
@@ -110,6 +35,20 @@ export default function CalendarScreen() {
   const [newEventCategory, setNewEventCategory] = useState<EventCategory>('meal');
   const [newEventTime, setNewEventTime] = useState('');
   const [newEventNotes, setNewEventNotes] = useState('');
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [tempTime, setTempTime] = useState(new Date());
+
+  // Load events from storage on mount and when screen focuses
+  useFocusEffect(
+    React.useCallback(() => {
+      loadEvents();
+    }, [])
+  );
+
+  const loadEvents = async () => {
+    const storedEvents = await eventStorage.getEvents();
+    setEvents(storedEvents);
+  };
 
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
@@ -153,7 +92,7 @@ export default function CalendarScreen() {
     setCurrentDate(addMonths(currentDate, 1));
   };
 
-  const handleAddEvent = () => {
+  const handleAddEvent = async () => {
     if (!newEventTitle.trim()) {
       Alert.alert('Lỗi', 'Vui lòng nhập tiêu đề sự kiện');
       return;
@@ -174,7 +113,8 @@ export default function CalendarScreen() {
       notes: newEventNotes,
     };
 
-    setEvents([...events, newEvent]);
+    await eventStorage.addEvent(newEvent);
+    await loadEvents();
     setShowAddModal(false);
     
     // Reset form
@@ -195,8 +135,9 @@ export default function CalendarScreen() {
         {
           text: 'Xóa',
           style: 'destructive',
-          onPress: () => {
-            setEvents(events.filter(e => e.id !== eventId));
+          onPress: async () => {
+            await eventStorage.deleteEvent(eventId);
+            await loadEvents();
             setShowEventDetail(false);
             Alert.alert('Đã xóa', 'Sự kiện đã được xóa');
           },
@@ -449,13 +390,33 @@ export default function CalendarScreen() {
               </View>
 
               <Text style={styles.formLabel}>Thời gian</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="HH:MM (VD: 07:30)"
-                value={newEventTime}
-                onChangeText={setNewEventTime}
-                keyboardType="numbers-and-punctuation"
-              />
+              <TouchableOpacity 
+                style={styles.timePickerButton} 
+                onPress={() => setShowTimePicker(true)}
+              >
+                <Ionicons name="time-outline" size={20} color={colors.textLight} />
+                <Text style={styles.timePickerText}>
+                  {newEventTime || 'Chọn thời gian'}
+                </Text>
+              </TouchableOpacity>
+              
+              {showTimePicker && (
+                <DateTimePicker
+                  value={tempTime}
+                  mode="time"
+                  is24Hour={true}
+                  display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                  onChange={(event, selectedTime) => {
+                    setShowTimePicker(Platform.OS === 'ios');
+                    if (selectedTime) {
+                      setTempTime(selectedTime);
+                      const hours = selectedTime.getHours().toString().padStart(2, '0');
+                      const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
+                      setNewEventTime(`${hours}:${minutes}`);
+                    }
+                  }}
+                />
+              )}
 
               <Text style={styles.formLabel}>Ghi chú</Text>
               <TextInput
@@ -888,6 +849,21 @@ const styles = StyleSheet.create({
   },
   categoryButtonTextActive: {
     color: '#fff',
+  },
+  timePickerButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    backgroundColor: colors.surface,
+    padding: spacing.md,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  timePickerText: {
+    fontSize: 15,
+    color: colors.text,
+    flex: 1,
   },
   submitButton: {
     flexDirection: 'row',

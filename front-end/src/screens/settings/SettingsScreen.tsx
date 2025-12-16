@@ -333,7 +333,7 @@ export default function SettingsScreen() {
                   'Về Ceres',
                   'Ứng dụng quản lý sức khỏe & dinh dưỡng\n\n' +
                   '📱 Phiên bản: 1.0.0\n' +
-                  '🏢 Phát triển bởi: Ceres Team\n' +
+                  '🏢 Phát triển bởi: UDU\n' +
                   '📅 Năm: 2025\n\n' +
                   'Giúp bạn theo dõi dinh dưỡng, tập luyện và đạt được mục tiêu sức khỏe!'
                 )}

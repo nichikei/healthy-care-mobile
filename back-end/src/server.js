@@ -11,6 +11,7 @@ import foodLogRoutes from './routes/foodLog.js';
 import workoutLogRoutes from './routes/workoutLog.js';
 import aiRoutes from './routes/ai.js';
 import statisticsRoutes from './routes/statistics.js';
+import calendarRoutes from './routes/calendar.js';
 
 const app = express();
 const PORT = config.port;
@@ -56,6 +57,7 @@ app.use('/api/food-log', foodLogRoutes);
 app.use('/api/workout-log', workoutLogRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/statistics', statisticsRoutes);
+app.use('/api/calendar', calendarRoutes);
 
 // 404 handler
 app.use((req, res) => {

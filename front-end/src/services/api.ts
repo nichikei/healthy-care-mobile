@@ -315,4 +315,36 @@ export const api = {
       method: 'POST',
       json: data,
     }),
+
+  // Calendar Events
+  getCalendarEvents: (): Promise<any[]> =>
+    http.request('/api/calendar'),
+
+  getCalendarEventsByDate: (date: string): Promise<any[]> =>
+    http.request(`/api/calendar/by-date?date=${date}`),
+
+  createCalendarEvent: (event: {
+    title: string;
+    eventDate: string;
+    timeSlot: string;
+    category: 'meal' | 'activity' | 'appointment';
+    location?: string;
+    note?: string;
+    linkedModule?: string;
+  }): Promise<any> =>
+    http.request('/api/calendar', {
+      method: 'POST',
+      json: event,
+    }),
+
+  updateCalendarEvent: (id: number, event: any): Promise<any> =>
+    http.request(`/api/calendar/${id}`, {
+      method: 'PUT',
+      json: event,
+    }),
+
+  deleteCalendarEvent: (id: number): Promise<void> =>
+    http.request(`/api/calendar/${id}`, {
+      method: 'DELETE',
+    }),
 };

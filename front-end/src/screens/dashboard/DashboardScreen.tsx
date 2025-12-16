@@ -26,6 +26,7 @@ import { StatCard } from '../../components/StatCard';
 import { NutritionChart } from '../../components/NutritionChart';
 import { MealCard } from '../../components/MealCard';
 import type { MainTabParamList } from '../../navigation/AppNavigator';
+import { eventStorage } from '../../services/eventStorage';
 
 // Import articles from Health Insights
 import type { Article } from '../healthInsights/HealthInsightsScreen';
@@ -117,6 +118,17 @@ interface MealItem {
   image?: string;
 }
 
+type EventCategory = 'meal' | 'workout' | 'appointment';
+
+interface CalendarEvent {
+  id: string;
+  title: string;
+  category: EventCategory;
+  date: Date;
+  time: string;
+  notes?: string;
+}
+
 type DashboardNavProp = NavigationProp<MainTabParamList>;
 
 export default function DashboardScreen() {
@@ -125,6 +137,7 @@ export default function DashboardScreen() {
   const [todayStats, setTodayStats] = useState<DailyStatistics | null>(null);
   const [todayMeals, setTodayMeals] = useState<MealItem[]>([]);
   const [recentWorkouts, setRecentWorkouts] = useState<WorkoutLog[]>([]);
+  const [todayEvents, setTodayEvents] = useState<CalendarEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [currentStreak, setCurrentStreak] = useState(7); // Mock data - sẽ lấy từ API sau
@@ -149,6 +162,42 @@ export default function DashboardScreen() {
       initial: false 
     });
   };
+
+  const getCategoryColor = (category: EventCategory) => {
+    switch (category) {
+      case 'meal':
+        return '#4CAF50';
+      case 'workout':
+        return '#FF9800';
+      case 'appointment':
+        return '#2196F3';
+      default:
+        return colors.primary;
+    }
+  };
+
+  const getCategoryIcon = (category: EventCategory) => {
+    switch (category) {
+      case 'meal':
+        return 'restaurant';
+      case 'workout':
+        return 'barbell';
+      case 'appointment':
+        return 'calendar';
+      default:
+        return 'calendar';
+    }
+  };
+
+  const loadTodayEvents = async () => {
+    try {
+      const events = await eventStorage.getTodayEvents();
+      setTodayEvents(events);
+    } catch (error) {
+      console.error('Error loading today events:', error);
+      setTodayEvents([]);
+    }
+  };
   const goToSettings = () => {
     navigation.navigate('Utilities', { 
       screen: 'Settings',
@@ -160,6 +209,9 @@ export default function DashboardScreen() {
 
   const fetchData = useCallback(async () => {
     try {
+      // Load today's events
+      loadTodayEvents();
+
       const [statsRes, mealsRes, workoutRes] = await Promise.all([
         api.getDailyStatistics(today),
         api.getFoodLog().then((logs: FoodLog[]) =>
@@ -469,23 +521,44 @@ export default function DashboardScreen() {
 
         {/* Calendar quick access */}
         <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Lịch hôm nay</Text>
+            <TouchableOpacity onPress={goToCalendar}>
+              <Text style={styles.seeAllText}>Xem tất cả</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.calendarCard}>
-            <View style={styles.calendarHeader}>
-              <View>
-                <Text style={styles.calendarLabel}>Lịch sức khỏe</Text>
-                <Text style={styles.calendarDate}>{format(new Date(), 'EEEE, d MMM yyyy')}</Text>
+            <View style={styles.calendarDateHeader}>
+              <Ionicons name="calendar-outline" size={20} color={colors.primary} />
+              <Text style={styles.calendarDate}>{format(new Date(), 'EEEE, d MMMM yyyy')}</Text>
+            </View>
+            {todayEvents.length > 0 ? (
+              <View style={styles.eventsContainer}>
+                {todayEvents.map((event) => (
+                  <View key={event.id} style={styles.eventItem}>
+                    <View style={[styles.eventIconBg, { backgroundColor: `${getCategoryColor(event.category)}15` }]}>
+                      <Ionicons name={getCategoryIcon(event.category) as any} size={20} color={getCategoryColor(event.category)} />
+                    </View>
+                    <View style={styles.eventContent}>
+                      <Text style={styles.eventTitle}>{event.title}</Text>
+                      {event.notes && <Text style={styles.eventNotes}>{event.notes}</Text>}
+                    </View>
+                    <View style={styles.eventTime}>
+                      <Ionicons name="time-outline" size={14} color={colors.textLight} />
+                      <Text style={styles.eventTimeText}>{event.time}</Text>
+                    </View>
+                  </View>
+                ))}
               </View>
-              <TouchableOpacity style={styles.calendarBtn} onPress={goToCalendar}>
-                <Ionicons name="calendar" size={18} color="#fff" />
-                <Text style={styles.calendarBtnText}>Mở lịch</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.calendarRow}>
-              <Ionicons name="alarm-outline" size={18} color={colors.primary} />
-              <Text style={styles.calendarRowText}>
-                Theo dõi lịch tập và nhắc uống nước trong một nơi.
-              </Text>
-            </View>
+            ) : (
+              <View style={styles.emptyEvents}>
+                <Ionicons name="calendar-outline" size={40} color={colors.textLight} />
+                <Text style={styles.emptyEventsText}>Không có sự kiện hôm nay</Text>
+                <TouchableOpacity style={styles.addEventBtn} onPress={goToCalendar}>
+                  <Text style={styles.addEventBtnText}>Thêm sự kiện</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </View>
 
@@ -1214,7 +1287,7 @@ const styles = StyleSheet.create({
   calendarCard: {
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     borderRadius: borderRadius.lg,
-    padding: spacing.md,
+    padding: spacing.lg,
     borderWidth: 1,
     borderColor: colors.border,
     shadowColor: '#000',
@@ -1223,47 +1296,83 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 3,
   },
-  calendarHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: spacing.sm,
-  },
-  calendarLabel: {
-    fontSize: 12,
-    color: colors.textSecondary,
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  calendarDate: {
-    fontSize: 16,
-    fontWeight: '800',
-    color: colors.text,
-  },
-  calendarBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.xs,
-    backgroundColor: colors.primary,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.xs,
-    borderRadius: borderRadius.full,
-  },
-  calendarBtnText: {
-    color: '#fff',
-    fontSize: 13,
-    fontWeight: '700',
-  },
-  calendarRow: {
+  calendarDateHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.sm,
+    marginBottom: spacing.md,
+    paddingBottom: spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
   },
-  calendarRowText: {
-    fontSize: 13,
-    color: colors.textSecondary,
+  calendarDate: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  eventsContainer: {
+    gap: spacing.sm,
+  },
+  eventItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    padding: spacing.sm,
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.md,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  eventIconBg: {
+    width: 40,
+    height: 40,
+    borderRadius: borderRadius.full,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  eventContent: {
     flex: 1,
+  },
+  eventTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text,
+    marginBottom: 2,
+  },
+  eventNotes: {
+    fontSize: 12,
+    color: colors.textLight,
+  },
+  eventTimeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  eventTimeText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: colors.textLight,
+  },
+  emptyEvents: {
+    alignItems: 'center',
+    paddingVertical: spacing.xl,
+  },
+  emptyEventsText: {
+    fontSize: 14,
+    color: colors.textLight,
+    marginTop: spacing.sm,
+    marginBottom: spacing.md,
+  },
+  addEventBtn: {
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    backgroundColor: colors.primary,
+    borderRadius: borderRadius.md,
+  },
+  addEventBtnText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#fff',
   },
   nutritionStatsGrid: {
     flexDirection: 'row',
