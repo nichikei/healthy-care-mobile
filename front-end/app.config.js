@@ -49,10 +49,10 @@ export default ({ config }) => {
     extra: {
       // API URL configuration
       // During development, this will use the Expo dev server IP
-      // In production, set EXPO_PUBLIC_API_URL environment variable
-      apiUrl: process.env.EXPO_PUBLIC_API_URL || null,
+      // In production, use Railway URL
+      apiUrl: process.env.EXPO_PUBLIC_API_URL || "https://mobile-app-production-4283.up.railway.app",
       eas: {
-        projectId: process.env.EXPO_PUBLIC_PROJECT_ID || "your-project-id"
+        projectId: "95514f7f-4849-4119-a2dc-1a2ee736845a"
       }
     }
   };
