@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+﻿import fetch from 'node-fetch';
 import { config } from '../config/index.js';
 import prisma from '../config/database.js';
 import { calculateBMR, calculateTDEE, calculateBMI } from '../utils/helpers.js';
@@ -159,12 +159,12 @@ Trả về JSON (tên TIẾNG VIỆT ngắn gọn):
       
       // Try to extract partial food name
       const nameMatch = content.match(/"food_name"\s*:\s*"([^"]*)/);
-      const partialName = nameMatch ? nameMatch[1] : 'PhÃ¡Â»Å¸ bÃƒÂ²';
+      const partialName = nameMatch ? nameMatch[1] : 'Món ăn';
       
       // Auto-complete JSON with Vietnamese food defaults
       content = `{
   "food_name": "${partialName}",
-  "portion_size": "1 tÃƒÂ´ (500g)",
+  "portion_size": "1 tô (500g)",
   "calories": 450,
   "protein": 28,
   "carbs": 60,
@@ -414,12 +414,12 @@ Trả về JSON (tên TIẾNG VIỆT ngắn gọn):
       
       // Try to extract partial food name
       const nameMatch = content.match(/"food_name"\s*:\s*"([^"]*)/);
-      const partialName = nameMatch ? nameMatch[1] : 'MÃƒÂ³n Ã„Æ’n khÃƒÂ´ng xÃƒÂ¡c Ã„â€˜Ã¡Â»â€¹nh';
+      const partialName = nameMatch ? nameMatch[1] : 'Món ăn';
       
       // Auto-complete JSON with Vietnamese food defaults
       content = `{
   "food_name": "${partialName}",
-  "portion_size": "1 tÃƒÂ´ (500g)",
+  "portion_size": "1 tô (500g)",
   "calories": 450,
   "protein": 28,
   "carbs": 60,
