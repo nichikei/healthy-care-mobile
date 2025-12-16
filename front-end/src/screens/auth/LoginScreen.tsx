@@ -59,7 +59,7 @@ export default function LoginScreen() {
           {/* Header */}
           <View style={styles.header}>
             <Text style={styles.logo}>🥗</Text>
-            <Text style={styles.title}>HealthyCare</Text>
+            <Text style={styles.title}>Ceres</Text>
             <Text style={styles.subtitle}>Chào mừng trở lại! Vui lòng đăng nhập.</Text>
           </View>
 

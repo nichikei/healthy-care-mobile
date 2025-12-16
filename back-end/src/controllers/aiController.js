@@ -63,6 +63,16 @@ All numbers must be integers. No markdown, no text, ONLY JSON.`;
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+      
+      // Xử lý lỗi rate limit (429)
+      if (response.status === 429) {
+        console.error('⚠️ Gemini API rate limit exceeded');
+        return res.status(429).json({
+          error: 'API đang quá tải. Vui lòng đợi vài giây rồi thử lại.',
+          code: 'RATE_LIMIT_EXCEEDED'
+        });
+      }
+      
       return res.status(response.status).json({
         error: errorData.error?.message || `API Error: ${response.statusText}`
       });

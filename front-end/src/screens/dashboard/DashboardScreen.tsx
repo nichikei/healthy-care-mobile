@@ -12,6 +12,7 @@ import {
   FlatList,
   Image,
 } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation, type NavigationProp } from '@react-navigation/native';
@@ -130,9 +131,30 @@ export default function DashboardScreen() {
   const progressAnim = useRef(new Animated.Value(0)).current;
 
   const goToFoodLog = () => navigation.navigate('FoodLog');
-  const goToExercises = () => navigation.navigate('Utilities', { screen: 'Exercises' });
-  const goToHealthInsights = () => navigation.navigate('Utilities', { screen: 'HealthInsights' });
-  const goToCalendar = () => navigation.navigate('Utilities', { screen: 'Calendar' });
+  const goToExercises = () => {
+    navigation.navigate('Utilities', { 
+      screen: 'Exercises',
+      initial: false 
+    });
+  };
+  const goToHealthInsights = () => {
+    navigation.navigate('Utilities', { 
+      screen: 'HealthInsights',
+      initial: false 
+    });
+  };
+  const goToCalendar = () => {
+    navigation.navigate('Utilities', { 
+      screen: 'Calendar',
+      initial: false 
+    });
+  };
+  const goToSettings = () => {
+    navigation.navigate('Utilities', { 
+      screen: 'Settings',
+      initial: false 
+    });
+  };
 
   const today = format(new Date(), 'yyyy-MM-dd');
 
@@ -218,10 +240,6 @@ export default function DashboardScreen() {
     return Math.round(bmr * 1.55);
   }, [user]);
 
-  const calorieIntakePercent = todayStats?.total_calories
-    ? Math.min(100, Math.round((todayStats.total_calories / tdee) * 100))
-    : 0;
-
   // Tính trực tiếp nutrition từ meals để đảm bảo real-time update
   const totalNutrition = useMemo(() => {
     return todayMeals.reduce(
@@ -237,6 +255,11 @@ export default function DashboardScreen() {
 
   const burned = todayStats?.calories_burned || 0;
   const remaining = Math.max(tdee - totalNutrition.calories + burned, 0);
+  
+  // Tính % dựa trên totalNutrition.calories để đồng bộ với hiển thị
+  const calorieIntakePercent = totalNutrition.calories > 0
+    ? Math.round((totalNutrition.calories / tdee) * 100)
+    : 0;
   const proteinGoal = Math.round(tdee * 0.3 / 4);
   const carbsGoal = Math.round(tdee * 0.4 / 4);
   const fatGoal = Math.round(tdee * 0.3 / 9);
@@ -271,75 +294,75 @@ export default function DashboardScreen() {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.mainContainer}>
         <View style={styles.loadingContainer}>
           <Text style={styles.loadingText}>Đang tải...</Text>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      {/* Fixed Header Background */}
-      <LinearGradient
-        colors={['#10b981', '#059669', '#047857']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.headerBackground}
-      />
-      
-      {/* Decorative Elements */}
-      <View style={styles.decorPattern1} />
-      <View style={styles.decorPattern2} />
-      
-      {/* Fixed Header */}
-      <SafeAreaView style={styles.fixedHeaderContainer} edges={['top']}>
-        <View style={styles.professionalHeader}>
-          <View style={styles.headerTop}>
-            <View style={styles.userSection}>
-              <View style={styles.avatarCircle}>
-                <Ionicons name="person" size={28} color="#fff" />
-              </View>
-              <View style={styles.userTextBlock}>
-                <Text style={styles.greetingText}>
-                  {getTimeBasedGreeting().emoji} {getTimeBasedGreeting().text}
-                </Text>
-                <Text style={styles.userNameText}>{user?.name || 'Người dùng'}</Text>
-                <Text style={styles.userGoalText}>
-                  Mục tiêu: {
-                    user?.goal === 'lose_weight' ? 'Giảm cân' : 
-                    user?.goal === 'maintain_weight' ? 'Duy trì cân nặng' :
-                    user?.goal === 'gain_weight' ? 'Tăng cân' :
-                    user?.goal === 'build_muscle' ? 'Tăng cơ' : 
-                    'Duy trì sức khỏe'
-                  }
-                </Text>
-              </View>
-            </View>
-            
-            <View style={styles.headerIcons}>
-              <TouchableOpacity style={styles.headerIconBtn} onPress={goToCalendar}>
-                <Ionicons name="calendar-outline" size={24} color="#fff" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.headerIconBtn}>
-                <Ionicons name="notifications-outline" size={24} color="#fff" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </SafeAreaView>
-      
-      {/* Scrollable Content */}
+    <View style={styles.mainContainer}>
       <ScrollView
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
+        {/* Header Background */}
+        <LinearGradient
+          colors={['#10b981', '#059669', '#047857']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.headerBackground}
+        />
+        
+        {/* Decorative Elements */}
+        <View style={styles.decorPattern1} />
+        <View style={styles.decorPattern2} />
+        
+        {/* Header */}
+        <SafeAreaView edges={['top']}>
+          <View style={styles.professionalHeader}>
+            <View style={styles.headerTop}>
+              <View style={styles.userSection}>
+                <TouchableOpacity style={styles.avatarCircle} onPress={goToSettings}>
+                  <Ionicons name="person" size={28} color="#fff" />
+                </TouchableOpacity>
+                <View style={styles.userTextBlock}>
+                  <Text style={styles.greetingText}>
+                    {getTimeBasedGreeting().emoji} {getTimeBasedGreeting().text}
+                  </Text>
+                  <Text style={styles.userNameText}>{user?.name || 'Người dùng'}</Text>
+                  <Text style={styles.userGoalText}>
+                    Mục tiêu: {
+                      user?.goal === 'lose_weight' ? 'Giảm cân' : 
+                      user?.goal === 'maintain_weight' ? 'Duy trì cân nặng' :
+                      user?.goal === 'gain_weight' ? 'Tăng cân' :
+                      user?.goal === 'build_muscle' ? 'Tăng cơ' : 
+                      'Duy trì sức khỏe'
+                    }
+                  </Text>
+                </View>
+              </View>
+              
+              <View style={styles.headerIcons}>
+                <TouchableOpacity style={styles.headerIconBtn} onPress={goToCalendar}>
+                  <Ionicons name="calendar-outline" size={24} color="#fff" />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.headerIconBtn}>
+                  <Ionicons name="notifications-outline" size={24} color="#fff" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </SafeAreaView>
 
-        {/* Nutrition Chart */}
-        <View style={[styles.section, { marginTop: spacing.sm }]}>
+        {/* Content Wrapper */}
+        <View style={styles.contentWrapper}>
+          {/* Nutrition Chart */}
+          <View style={[styles.section, { marginTop: spacing.sm }]}>
           <View style={styles.chartCard}>
             <View style={styles.chartHeader}>
               <View>
@@ -356,7 +379,32 @@ export default function DashboardScreen() {
                 <Text style={styles.sideStatValue}>{totalNutrition.calories || 0}</Text>
                 <Text style={styles.sideStatLabel}>Đã nạp</Text>
               </View>
-              <View style={styles.kcalCircle}>
+              <View style={styles.kcalCircleContainer}>
+                <Svg width={150} height={150}>
+                  {/* Background circle */}
+                  <Circle
+                    cx={75}
+                    cy={75}
+                    r={67}
+                    stroke={colors.border}
+                    strokeWidth={8}
+                    fill="none"
+                  />
+                  {/* Progress circle */}
+                  <Circle
+                    cx={75}
+                    cy={75}
+                    r={67}
+                    stroke={calorieIntakePercent >= 100 ? colors.warning : colors.primary}
+                    strokeWidth={8}
+                    fill="none"
+                    strokeDasharray={`${(Math.min(calorieIntakePercent, 100) / 100) * 2 * Math.PI * 67} ${2 * Math.PI * 67}`}
+                    strokeDashoffset={0}
+                    rotation={-90}
+                    origin="75, 75"
+                    strokeLinecap="round"
+                  />
+                </Svg>
                 <View style={styles.kcalInner}>
                   <Text style={styles.kcalNumber}>{remaining}</Text>
                   <Text style={styles.kcalLabel}>kcal còn lại</Text>
@@ -514,7 +562,7 @@ export default function DashboardScreen() {
             </TouchableOpacity>
           </View>
           {ARTICLES.slice(0, 5).map((article) => (
-            <TouchableOpacity key={article.id} style={styles.articleCard}>
+            <TouchableOpacity key={article.id} style={styles.articleCard} onPress={goToHealthInsights}>
               <Image source={{ uri: article.image }} style={styles.articleImage} />
               <View style={styles.articleContent}>
                 <View style={styles.articleHeader}>
@@ -539,13 +587,14 @@ export default function DashboardScreen() {
             </TouchableOpacity>
           ))}
         </View>
+        </View>
       </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  mainContainer: {
     flex: 1,
     backgroundColor: '#f8f9fa',
   },
@@ -573,13 +622,6 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     backgroundColor: 'rgba(255, 255, 255, 0.06)',
-  },
-  fixedHeaderContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
   },
   professionalHeader: {
     paddingHorizontal: spacing.lg,
@@ -645,15 +687,17 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-    marginTop: 140,
   },
   scrollContent: {
-    padding: spacing.lg,
-    paddingTop: spacing.md,
     paddingBottom: 140,
+  },
+  contentWrapper: {
     backgroundColor: '#f8f9fa',
     borderTopLeftRadius: borderRadius.xl,
     borderTopRightRadius: borderRadius.xl,
+    padding: spacing.lg,
+    paddingTop: spacing.md,
+    marginTop: -20,
   },
   loadingContainer: {
     flex: 1,
@@ -1076,20 +1120,22 @@ const styles = StyleSheet.create({
     marginTop: 2,
     textAlign: 'center',
   },
-  kcalCircle: {
+  kcalCircleContainer: {
     width: 150,
     height: 150,
-    borderRadius: 75,
-    borderWidth: 8,
-    borderColor: colors.primary + 'AA',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(16,185,129,0.04)',
     marginHorizontal: spacing.md,
+    position: 'relative',
   },
   kcalInner: {
+    position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   kcalNumber: {
     fontSize: 28,

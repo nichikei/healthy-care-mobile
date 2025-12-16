@@ -294,7 +294,18 @@ export const api = {
       };
     } catch (error: any) {
       console.error('❌ Error analyzing food image:', error);
-      throw new Error(error.message || 'Không thể phân tích ảnh');
+      
+      // Xử lý lỗi rate limit (429)
+      if (error.message?.includes('429') || error.status === 429) {
+        throw new Error('API đang quá tải. Vui lòng đợi vài giây rồi thử lại.');
+      }
+      
+      // Xử lý lỗi network
+      if (error.message?.includes('Network') || error.message?.includes('timeout')) {
+        throw new Error('Lỗi kết nối mạng. Vui lòng kiểm tra internet và thử lại.');
+      }
+      
+      throw new Error(error.message || 'Không thể phân tích ảnh. Vui lòng thử lại.');
     }
   },
 

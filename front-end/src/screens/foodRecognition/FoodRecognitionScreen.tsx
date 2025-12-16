@@ -1,5 +1,5 @@
 // src/screens/foodRecognition/FoodRecognitionScreen.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -15,7 +15,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import { api } from '../../services/api';
 import { colors, spacing, borderRadius } from '../../context/ThemeContext';
@@ -37,30 +37,52 @@ export default function FoodRecognitionScreen() {
     confidence: number;
   } | null>(null);
   const [mealType, setMealType] = useState<typeof MEAL_TYPES[number]>('Breakfast');
+  const hasLaunchedCamera = useRef(false);
 
-  useEffect(() => {
-    // Tự động mở camera khi vào màn hình
-    const initCamera = async () => {
-      const { status } = await ImagePicker.requestCameraPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Quyền truy cập', 'Cần cấp quyền sử dụng camera', [
-          {
-            text: 'OK',
-            onPress: () => {
-              if (navigation.canGoBack()) {
-                navigation.goBack();
-              } else {
-                (navigation as any).navigate('FoodLog');
-              }
+  // Reset state khi screen được focus
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reset tất cả state khi vào màn hình
+      setAnalyzing(false);
+      setSaving(false);
+      setSelectedImage(null);
+      setShowConfirmModal(false);
+      setAiResult(null);
+      setMealType('Breakfast');
+      hasLaunchedCamera.current = false;
+
+      // Tự động mở camera
+      const initCamera = async () => {
+        if (hasLaunchedCamera.current) return;
+        hasLaunchedCamera.current = true;
+
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Quyền truy cập', 'Cần cấp quyền sử dụng camera', [
+            {
+              text: 'OK',
+              onPress: () => {
+                if (navigation.canGoBack()) {
+                  navigation.goBack();
+                } else {
+                  (navigation as any).navigate('FoodLog');
+                }
+              },
             },
-          },
-        ]);
-        return;
-      }
-      handleTakePhoto();
-    };
-    initCamera();
-  }, []);
+          ]);
+          return;
+        }
+        handleTakePhoto();
+      };
+
+      initCamera();
+
+      // Cleanup khi unfocus
+      return () => {
+        hasLaunchedCamera.current = false;
+      };
+    }, [])
+  );
 
   const handleTakePhoto = async () => {
     const result = await ImagePicker.launchCameraAsync({
@@ -100,12 +122,17 @@ export default function FoodRecognitionScreen() {
       setShowConfirmModal(true);
     } catch (error: any) {
       console.error('❌ Error analyzing image:', error);
+      
+      // Hiển thị thông báo lỗi cụ thể từ API
+      const errorMessage = error.message || 'Không thể phân tích ảnh. Vui lòng thử lại.';
+      
       Alert.alert(
         'Lỗi phân tích',
-        'Không thể phân tích ảnh. Bạn có muốn thử lại không?',
+        errorMessage,
         [
           { 
             text: 'Hủy', 
+            style: 'cancel',
             onPress: () => {
               if (navigation.canGoBack()) {
                 navigation.goBack();

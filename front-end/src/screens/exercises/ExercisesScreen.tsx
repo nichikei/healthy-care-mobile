@@ -29,7 +29,7 @@ interface VideoExercise {
   videoUrl: string;
   thumbnailUrl: string;
   muscleGroups: string[];
-  difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
+  difficulty: 'Người mới' | 'Trung bình' | 'Nâng cao';
   duration: number;
   calories: number;
 }
@@ -48,67 +48,67 @@ const EXERCISE_TYPES = [
 const VIDEO_EXERCISES: VideoExercise[] = [
   {
     id: "YOGA_BEGINNER_01",
-    name: "Morning Yoga Flow (20 Min)",
+    name: "Yoga buổi sáng (20 phút)",
     description: "Một bài tập yoga buổi sáng nhẹ nhàng để khởi động ngày mới",
     videoUrl: "https://www.youtube.com/watch?v=4TLHLNX65-4",
     thumbnailUrl: "https://i.ytimg.com/vi/4TLHLNX65-4/maxresdefault.jpg",
-    muscleGroups: ["Full Body", "Flexibility"],
-    difficulty: "Beginner",
+    muscleGroups: ["Toàn thân", "Linh hoạt"],
+    difficulty: "Người mới",
     duration: 20,
     calories: 80,
   },
   {
     id: "HIIT_FAT_LOSS_20",
-    name: "20 Min HIIT Fat Loss",
+    name: "HIIT đốt mỡ 20 phút",
     description: "Bài tập HIIT cường độ cao để đốt mỡ hiệu quả",
     videoUrl: "https://www.youtube.com/watch?v=zJKtwow2oBc",
     thumbnailUrl: "https://i.ytimg.com/vi/zJKtwow2oBc/maxresdefault.jpg",
-    muscleGroups: ["Full Body", "Cardio"],
-    difficulty: "Intermediate",
+    muscleGroups: ["Toàn thân", "Tim mạch"],
+    difficulty: "Trung bình",
     duration: 20,
     calories: 350,
   },
   {
     id: "BEGINNER_ABS_01",
-    name: "10 Min Beginner Abs",
+    name: "Bụng cơ bản 10 phút",
     description: "Bài tập bụng cho người mới bắt đầu, không cần dụng cụ",
     videoUrl: "https://www.youtube.com/watch?v=DHD1-2P94DI",
     thumbnailUrl: "https://i.ytimg.com/vi/DHD1-2P94DI/maxresdefault.jpg",
-    muscleGroups: ["Core", "Abs"],
-    difficulty: "Beginner",
+    muscleGroups: ["Thân", "Bụng"],
+    difficulty: "Người mới",
     duration: 10,
     calories: 100,
   },
   {
     id: "FULL_BODY_STRENGTH_01",
-    name: "Full Body Strength Workout",
+    name: "Tăng sức mạnh toàn thân",
     description: "Tập sức mạnh toàn thân với tạ dumbbell",
     videoUrl: "https://www.youtube.com/watch?v=_jGebGZnYrU",
     thumbnailUrl: "https://i.ytimg.com/vi/_jGebGZnYrU/maxresdefault.jpg",
-    muscleGroups: ["Full Body", "Strength"],
-    difficulty: "Intermediate",
+    muscleGroups: ["Toàn thân", "Sức mạnh"],
+    difficulty: "Trung bình",
     duration: 45,
     calories: 320,
   },
   {
     id: "PLANK_BEGINNER_01",
-    name: "Planks For Beginners",
+    name: "Plank cơ bản cho người mới",
     description: "Hướng dẫn bài tập plank cơ bản cho người mới",
     videoUrl: "https://www.youtube.com/watch?v=ASdvN_XEl_c",
     thumbnailUrl: "https://i.ytimg.com/vi/ASdvN_XEl_c/maxresdefault.jpg",
-    muscleGroups: ["Core", "Abs"],
-    difficulty: "Beginner",
+    muscleGroups: ["Thân", "Bụng"],
+    difficulty: "Người mới",
     duration: 15,
     calories: 150,
   },
   {
     id: "CHEST_WORKOUT_01",
-    name: "15 Min Chest & Triceps",
+    name: "Ngực & tay sau 15 phút",
     description: "Bài tập ngực và tay sau hiệu quả với dumbbells",
     videoUrl: "https://www.youtube.com/watch?v=AiwbOqWfqvE",
     thumbnailUrl: "https://i.ytimg.com/vi/AiwbOqWfqvE/maxresdefault.jpg",
-    muscleGroups: ["Chest", "Triceps"],
-    difficulty: "Intermediate",
+    muscleGroups: ["Ngực", "Tay sau"],
+    difficulty: "Trung bình",
     duration: 15,
     calories: 200,
   },
@@ -121,7 +121,7 @@ export default function ExercisesScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<'All' | 'Beginner' | 'Intermediate' | 'Advanced'>('All');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<'Tất cả' | 'Người mới' | 'Trung bình' | 'Nâng cao'>('Tất cả');
   const [selectedVideo, setSelectedVideo] = useState<VideoExercise | null>(null);
   const [videoModalVisible, setVideoModalVisible] = useState(false);
 
@@ -275,7 +275,7 @@ export default function ExercisesScreen() {
   const totalCaloriesBurned = workouts.reduce((sum, w) => sum + w.calories_burned_estimated, 0);
   const totalDuration = workouts.reduce((sum, w) => sum + w.duration_minutes, 0);
 
-  const filteredVideos = selectedDifficulty === 'All' 
+  const filteredVideos = selectedDifficulty === 'Tất cả' 
     ? VIDEO_EXERCISES 
     : VIDEO_EXERCISES.filter(v => v.difficulty === selectedDifficulty);
 
@@ -329,7 +329,7 @@ export default function ExercisesScreen() {
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Video bài tập gợi ý</Text>
             <View style={styles.filterButtons}>
-              {(['All', 'Beginner', 'Intermediate', 'Advanced'] as const).map((level) => (
+              {(['Tất cả', 'Người mới', 'Trung bình', 'Nâng cao'] as const).map((level) => (
                 <TouchableOpacity
                   key={level}
                   style={[
@@ -344,7 +344,7 @@ export default function ExercisesScreen() {
                       selectedDifficulty === level && styles.filterBtnTextActive,
                     ]}
                   >
-                    {level === 'All' ? 'Tất cả' : level}
+                    {level}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -605,7 +605,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
     flex: 1,
     textAlign: 'center',
-    marginRight: -40,
   },
   headerSpacer: {
     width: 40,
@@ -613,26 +612,28 @@ const styles = StyleSheet.create({
   summaryRow: {
     flexDirection: 'row',
     padding: spacing.md,
-    gap: spacing.sm,
+    paddingBottom: spacing.lg,
+    gap: spacing.md,
   },
   summaryCard: {
     flex: 1,
     backgroundColor: colors.surface,
     borderRadius: borderRadius.lg,
-    padding: spacing.md,
+    padding: spacing.sm,
+    paddingVertical: spacing.md,
     alignItems: 'center',
   },
   summaryIcon: {
-    fontSize: 24,
-    marginBottom: spacing.xs,
+    fontSize: 20,
+    marginBottom: 4,
   },
   summaryValue: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: '700',
     color: colors.text,
   },
   summaryLabel: {
-    fontSize: 11,
+    fontSize: 10,
     color: colors.textSecondary,
     marginTop: 2,
   },
@@ -642,14 +643,15 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   videoSection: {
-    marginBottom: spacing.lg,
+    marginBottom: spacing.xl,
   },
   sectionHeader: {
     marginBottom: spacing.md,
   },
   filterButtons: {
     flexDirection: 'row',
-    gap: spacing.xs,
+    gap: spacing.sm,
+    marginTop: spacing.xs,
   },
   filterBtn: {
     paddingHorizontal: spacing.md,

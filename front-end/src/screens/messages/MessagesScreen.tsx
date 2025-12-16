@@ -492,7 +492,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     flex: 1,
     textAlign: 'center',
-    marginRight: -40,
   },
   headerRight: {
     width: 40,
