@@ -40,6 +40,7 @@ export type AuthStackParamList = {
   Register: undefined;
 };
 
+// Main Tab Navigator Types
 export type MainTabParamList = {
   Dashboard: undefined;
   FoodLog: undefined;
