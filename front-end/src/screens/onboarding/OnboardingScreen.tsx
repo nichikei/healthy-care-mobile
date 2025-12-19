@@ -1,3 +1,4 @@
+// User Onboarding Flow Screen
 // src/screens/onboarding/OnboardingScreen.tsx
 import React, { useState } from 'react';
 import {
