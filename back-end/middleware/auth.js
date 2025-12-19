@@ -7,6 +7,7 @@ import prisma from '../config/database.js';
  * Middleware to attach user if JWT token is present
  * Does not require authentication, just attaches user if token is valid
  */
+// Optional authentication
 export const attachUserIfPresent = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   
