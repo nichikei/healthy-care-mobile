@@ -16,7 +16,7 @@ router.post(
   authController.register
 );
 
-// Login
+// User Login Endpoint
 router.post(
   '/login',
   body('email').isEmail().withMessage('Valid email required'),
