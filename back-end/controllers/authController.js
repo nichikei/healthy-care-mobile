@@ -6,8 +6,11 @@ import { mapUser } from '../utils/helpers.js';
 
 /**
  * Create JWT tokens for user
+ * @param {Object} user - User object
+ * @returns {Object} Access and refresh tokens
  */
 const createTokens = (user) => {
+  console.log('Creating tokens for user:', user.id);
   const payload = { id: user.id, email: user.email };
   
   const accessToken = jwt.sign(payload, config.jwt.accessSecret, {
