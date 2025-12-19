@@ -10,17 +10,17 @@ import prisma from '../config/database.js';
 // Optional authentication
 export const attachUserIfPresent = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
-  
+
   if (!token) {
     return next();
   }
-  
+
   try {
     req.user = jwt.verify(token, config.jwt.accessSecret);
   } catch (error) {
     // Token invalid or expired, continue without user
   }
-  
+
   next();
 };
 
@@ -79,8 +79,8 @@ export const requireAuth = async (req, res, next) => {
  * Get user ID from request or fallback to default
  */
 export const getUserIdOrFallback = (req) => {
-  return req.user?.id || 
-         Number(req.query.userId || req.body?.userId) || 
+  return req.user?.id ||
+         Number(req.query.userId || req.body?.userId) ||
          config.defaultUserId;
 };
 
@@ -91,11 +91,11 @@ export const ensureUserIdentity = (req, res) => {
   if (req.user?.id) {
     return req.user.id;
   }
-  
+
   if (config.allowGuestMode) {
     return config.defaultUserId;
   }
-  
+
   res.status(401).json({ error: 'Unauthorized' });
   return null;
 };

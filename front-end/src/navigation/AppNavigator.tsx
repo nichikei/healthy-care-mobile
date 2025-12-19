@@ -15,7 +15,7 @@ import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import OnboardingScreen from '../screens/onboarding/OnboardingScreen';
 
-// Main Screens
+// Application Main Screens
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
 import FoodDiaryScreen from '../screens/foodDiary/FoodDiaryScreen';
 import ExercisesScreen from '../screens/exercises/ExercisesScreen';
@@ -133,13 +133,13 @@ const MainTabNavigator = () => {
     >
       <Tab.Screen name="Dashboard" component={DashboardScreen} options={{ title: 'Trang chủ', headerShown: false }} />
       <Tab.Screen name="FoodLog" component={FoodDiaryScreen} options={{ title: 'Nhật ký', headerShown: false }} />
-      <Tab.Screen 
-        name="Camera" 
-        component={FoodRecognitionScreen} 
-        options={{ 
+      <Tab.Screen
+        name="Camera"
+        component={FoodRecognitionScreen}
+        options={{
           title: 'Chụp ảnh',
           tabBarLabel: () => null,
-        }} 
+        }}
       />
       <Tab.Screen name="Utilities" component={UtilitiesStackNavigator} options={{ title: 'Tiện ích' }} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Cài đặt' }} />
