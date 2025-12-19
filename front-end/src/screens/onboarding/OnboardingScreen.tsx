@@ -17,6 +17,7 @@ import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
 import { colors, spacing, borderRadius } from '../../context/ThemeContext';
 
+// User fitness goals
 const GOALS = [
   { id: 'lose_weight', label: 'Giảm cân', icon: '📉' },
   { id: 'maintain', label: 'Duy trì cân nặng', icon: '⚖️' },
