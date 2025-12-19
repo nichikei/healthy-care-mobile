@@ -12,6 +12,7 @@ import * as SecureStore from 'expo-secure-store';
 import { api, type User } from '../services/api';
 import { http } from '../services/http';
 
+// Authentication context interface
 export interface AuthContextValue {
   user: User | null;
   isLoggedIn: boolean;
