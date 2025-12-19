@@ -1,3 +1,4 @@
+// Helper utility functions
 // src/utils/helpers.ts
 import { format, parseISO, isToday, isYesterday } from 'date-fns';
 
