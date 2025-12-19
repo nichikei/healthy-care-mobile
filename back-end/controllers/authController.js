@@ -12,15 +12,15 @@ import { mapUser } from '../utils/helpers.js';
 const createTokens = (user) => {
   console.log('Creating tokens for user:', user.id);
   const payload = { id: user.id, email: user.email };
-  
+
   const accessToken = jwt.sign(payload, config.jwt.accessSecret, {
     expiresIn: config.jwt.accessExpiresIn,
   });
-  
+
   const refreshToken = jwt.sign(payload, config.jwt.refreshSecret, {
     expiresIn: config.jwt.refreshExpiresIn,
   });
-  
+
   return { accessToken, refreshToken };
 };
 
@@ -31,10 +31,10 @@ const createTokens = (user) => {
 const sendAuthResponse = (res, user) => {
   const tokens = createTokens(user);
   console.log('Sending auth response');
-  
+
   // Set refresh token as HTTP-only cookie
   res.cookie(config.cookie.name, tokens.refreshToken, config.cookie.options);
-  
+
   res.json({
     user: mapUser(user),
     accessToken: tokens.accessToken,
@@ -47,16 +47,16 @@ const sendAuthResponse = (res, user) => {
  */
 export const register = async (req, res) => {
   try {
-    const { 
-      email, 
-      password, 
-      name, 
-      age, 
-      gender, 
-      height, 
-      weight, 
-      goal, 
-      activityLevel 
+    const {
+      email,
+      password,
+      name,
+      age,
+      gender,
+      height,
+      weight,
+      goal,
+      activityLevel
     } = req.body;
 
     // Check if user already exists
@@ -122,14 +122,14 @@ export const login = async (req, res) => {
 export const refresh = async (req, res) => {
   try {
     const token = req.body?.refreshToken || req.cookies?.[config.cookie.name] || null;
-    
+
     if (!token) {
       return res.status(401).json({ error: 'Missing refresh token' });
     }
 
     // Verify refresh token
     const payload = jwt.verify(token, config.jwt.refreshSecret);
-    
+
     // Get user
     const user = await prisma.user.findUnique({ where: { id: payload.id } });
     if (!user) {
@@ -159,14 +159,14 @@ export const logout = (req, res) => {
  */
 export const getProfile = async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({ 
-      where: { id: req.user.id } 
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id }
     });
-    
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    
+
     res.json(mapUser(user));
   } catch (error) {
     console.error('Get profile error:', error);
@@ -180,14 +180,14 @@ export const getProfile = async (req, res) => {
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { 
-      name, 
-      age, 
-      gender, 
-      heightCm, 
-      weightKg, 
-      goal, 
-      activityLevel, 
+    const {
+      name,
+      age,
+      gender,
+      heightCm,
+      weightKg,
+      goal,
+      activityLevel,
       exercisePreferences,
       neckCm,
       waistCm,
