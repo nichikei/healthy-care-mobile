@@ -34,6 +34,7 @@ export type RootStackParamList = {
   Main: undefined;
 };
 
+// Auth Stack Types
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
