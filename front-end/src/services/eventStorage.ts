@@ -50,6 +50,10 @@ const convertToApiFormat = (event: Partial<CalendarEvent>) => {
   };
 };
 
+/**
+ * Calendar Event Storage Service
+ * Manages calendar events with API integration
+ */
 export const eventStorage = {
   // Get all events
   async getEvents(): Promise<CalendarEvent[]> {
