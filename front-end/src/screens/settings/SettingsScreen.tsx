@@ -1,3 +1,4 @@
+// Settings Screen Component
 // src/screens/settings/SettingsScreen.tsx
 import React, { useState } from 'react';
 import {
