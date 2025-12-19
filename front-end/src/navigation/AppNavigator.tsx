@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../context/AuthContext';
 import { colors } from '../context/ThemeContext';
 
-// Auth Screens
+// Authentication Screens
 import LoginScreen from '../screens/auth/LoginScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import OnboardingScreen from '../screens/onboarding/OnboardingScreen';
