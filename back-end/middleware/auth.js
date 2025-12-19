@@ -1,3 +1,4 @@
+// Authentication middleware
 import jwt from 'jsonwebtoken';
 import { config } from '../config/index.js';
 import prisma from '../config/database.js';
