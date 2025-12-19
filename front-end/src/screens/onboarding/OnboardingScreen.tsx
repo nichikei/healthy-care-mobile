@@ -24,6 +24,7 @@ const GOALS = [
   { id: 'gain_weight', label: 'Tăng cân', icon: '💪' },
 ];
 
+// Activity level options
 const ACTIVITY_LEVELS = [
   { id: 'sedentary', label: 'Ít vận động', description: 'Ít hoặc không tập' },
   { id: 'light', label: 'Nhẹ nhàng', description: '1-3 ngày/tuần' },
