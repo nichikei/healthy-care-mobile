@@ -143,7 +143,7 @@ export default function SettingsScreen() {
               <Text style={styles.statValue}>{user?.height_cm || '--'}</Text>
               <Text style={styles.statLabel}>Chiều cao (cm)</Text>
             </View>
-            
+
             <View style={styles.statCard}>
               <View style={[styles.statIcon, { backgroundColor: '#E3F2FD' }]}>
                 <Ionicons name="speedometer-outline" size={24} color="#2196F3" />
@@ -151,7 +151,7 @@ export default function SettingsScreen() {
               <Text style={styles.statValue}>{user?.weight_kg || '--'}</Text>
               <Text style={styles.statLabel}>Cân nặng (kg)</Text>
             </View>
-            
+
             <View style={styles.statCard}>
               <View style={[styles.statIcon, { backgroundColor: '#FFF3E0' }]}>
                 <Ionicons name="time-outline" size={24} color="#FF9800" />
@@ -164,7 +164,7 @@ export default function SettingsScreen() {
           {/* Preferences Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>TÙY CHỈNH</Text>
-            
+
             <View style={styles.settingsGroup}>
               <View style={styles.settingItem}>
                 <View style={styles.settingLeft}>
@@ -183,7 +183,7 @@ export default function SettingsScreen() {
 
               <View style={styles.divider} />
 
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.settingItem}
                 onPress={() => setGoalModalVisible(true)}
               >
@@ -203,7 +203,7 @@ export default function SettingsScreen() {
 
               <View style={styles.divider} />
 
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.settingItem}
                 onPress={() => setActivityModalVisible(true)}
               >
@@ -226,7 +226,7 @@ export default function SettingsScreen() {
           {/* Reminders Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>NHẮC NHỞ</Text>
-            
+
             <View style={styles.settingsGroup}>
               <View style={styles.settingItem}>
                 <View style={styles.settingLeft}>
@@ -282,9 +282,9 @@ export default function SettingsScreen() {
           {/* Support Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>HỖ TRỢ</Text>
-            
+
             <View style={styles.settingsGroup}>
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.settingItem}
                 activeOpacity={0.7}
                 onPress={() => Alert.alert(
@@ -305,7 +305,7 @@ export default function SettingsScreen() {
 
               <View style={styles.divider} />
 
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.settingItem}
                 activeOpacity={0.7}
                 onPress={() => Alert.alert(
@@ -327,7 +327,7 @@ export default function SettingsScreen() {
 
               <View style={styles.divider} />
 
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.settingItem}
                 activeOpacity={0.7}
                 onPress={() => Alert.alert(
