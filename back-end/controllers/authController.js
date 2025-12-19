@@ -26,9 +26,11 @@ const createTokens = (user) => {
 
 /**
  * Send authentication response with tokens
+ * Includes user data and sets HTTP-only cookie
  */
 const sendAuthResponse = (res, user) => {
   const tokens = createTokens(user);
+  console.log('Sending auth response');
   
   // Set refresh token as HTTP-only cookie
   res.cookie(config.cookie.name, tokens.refreshToken, config.cookie.options);
