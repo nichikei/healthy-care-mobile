@@ -26,6 +26,7 @@ import { MealCard } from '../../components/MealCard';
 import type { MainTabParamList } from '../../navigation/AppNavigator';
 import { eventStorage } from '../../services/eventStorage';
 
+
 // Import articles from Health Insights
 import type { Article } from '../healthInsights/HealthInsightsScreen';
 const ARTICLES: Article[] = [
@@ -141,21 +142,21 @@ export default function DashboardScreen() {
 
   const goToFoodLog = () => navigation.navigate('FoodLog');
   const goToExercises = () => {
-    navigation.navigate('Utilities', { 
+    navigation.navigate('Utilities', {
       screen: 'Exercises',
-      initial: false 
+      initial: false
     });
   };
   const goToHealthInsights = () => {
-    navigation.navigate('Utilities', { 
+    navigation.navigate('Utilities', {
       screen: 'HealthInsights',
-      initial: false 
+      initial: false
     });
   };
   const goToCalendar = () => {
-    navigation.navigate('Utilities', { 
+    navigation.navigate('Utilities', {
       screen: 'Calendar',
-      initial: false 
+      initial: false
     });
   };
 
@@ -195,9 +196,9 @@ export default function DashboardScreen() {
     }
   };
   const goToSettings = () => {
-    navigation.navigate('Utilities', { 
+    navigation.navigate('Utilities', {
       screen: 'Settings',
-      initial: false 
+      initial: false
     });
   };
 
@@ -299,7 +300,7 @@ export default function DashboardScreen() {
 
   const burned = todayStats?.calories_burned || 0;
   const remaining = Math.max(tdee - totalNutrition.calories + burned, 0);
-  
+
   // Tính % dựa trên totalNutrition.calories để đồng bộ với hiển thị
   const calorieIntakePercent = totalNutrition.calories > 0
     ? Math.round((totalNutrition.calories / tdee) * 100)
@@ -333,11 +334,11 @@ export default function DashboardScreen() {
           end={{ x: 1, y: 1 }}
           style={styles.headerBackground}
         />
-        
+
         {/* Decorative Elements */}
         <View style={styles.decorPattern1} />
         <View style={styles.decorPattern2} />
-        
+
         {/* Header */}
         <SafeAreaView edges={['top']}>
           <View style={styles.professionalHeader}>
@@ -353,16 +354,16 @@ export default function DashboardScreen() {
                   <Text style={styles.userNameText}>{user?.name || 'Người dùng'}</Text>
                   <Text style={styles.userGoalText}>
                     Mục tiêu: {
-                      user?.goal === 'lose_weight' ? 'Giảm cân' : 
-                      user?.goal === 'maintain_weight' ? 'Duy trì cân nặng' :
-                      user?.goal === 'gain_weight' ? 'Tăng cân' :
-                      user?.goal === 'build_muscle' ? 'Tăng cơ' : 
-                      'Duy trì sức khỏe'
+                      user?.goal === 'lose_weight' ? 'Giảm cân' :
+                        user?.goal === 'maintain_weight' ? 'Duy trì cân nặng' :
+                          user?.goal === 'gain_weight' ? 'Tăng cân' :
+                            user?.goal === 'build_muscle' ? 'Tăng cơ' :
+                              'Duy trì sức khỏe'
                     }
                   </Text>
                 </View>
               </View>
-              
+
               <View style={styles.headerIcons}>
                 <TouchableOpacity style={styles.headerIconBtn} onPress={goToCalendar}>
                   <Ionicons name="calendar-outline" size={24} color="#fff" />
@@ -379,251 +380,251 @@ export default function DashboardScreen() {
         <View style={styles.contentWrapper}>
           {/* Nutrition Chart */}
           <View style={[styles.section, { marginTop: spacing.sm }]}>
-          <View style={styles.chartCard}>
-            <View style={styles.chartHeader}>
-              <View>
-                <Text style={styles.chartSubLabel}>Hôm nay</Text>
+            <View style={styles.chartCard}>
+              <View style={styles.chartHeader}>
+                <View>
+                  <Text style={styles.chartSubLabel}>Hôm nay</Text>
+                </View>
+                <View style={styles.goalPill}>
+                  <Ionicons name="flame-outline" size={16} color={colors.primary} />
+                  <Text style={styles.goalText}>{tdee} kcal mục tiêu</Text>
+                </View>
               </View>
-              <View style={styles.goalPill}>
-                <Ionicons name="flame-outline" size={16} color={colors.primary} />
-                <Text style={styles.goalText}>{tdee} kcal mục tiêu</Text>
-              </View>
-            </View>
 
-            <View style={styles.kcalRow}>
-              <View style={styles.sideStat}>
-                <Text style={styles.sideStatValue}>{totalNutrition.calories || 0}</Text>
-                <Text style={styles.sideStatLabel}>Đã nạp</Text>
-              </View>
-              <View style={styles.kcalCircleContainer}>
-                <Svg width={150} height={150}>
-                  {/* Background circle */}
-                  <Circle
-                    cx={75}
-                    cy={75}
-                    r={67}
-                    stroke={colors.border}
-                    strokeWidth={8}
-                    fill="none"
-                  />
-                  {/* Progress circle */}
-                  <Circle
-                    cx={75}
-                    cy={75}
-                    r={67}
-                    stroke={calorieIntakePercent >= 100 ? colors.warning : colors.primary}
-                    strokeWidth={8}
-                    fill="none"
-                    strokeDasharray={`${(Math.min(calorieIntakePercent, 100) / 100) * 2 * Math.PI * 67} ${2 * Math.PI * 67}`}
-                    strokeDashoffset={0}
-                    rotation={-90}
-                    origin="75, 75"
-                    strokeLinecap="round"
-                  />
-                </Svg>
-                <View style={styles.kcalInner}>
-                  <Text style={styles.kcalNumber}>{remaining}</Text>
-                  <Text style={styles.kcalLabel}>kcal còn lại</Text>
+              <View style={styles.kcalRow}>
+                <View style={styles.sideStat}>
+                  <Text style={styles.sideStatValue}>{totalNutrition.calories || 0}</Text>
+                  <Text style={styles.sideStatLabel}>Đã nạp</Text>
                 </View>
-              </View>
-              <View style={styles.sideStat}>
-                <Text style={styles.sideStatValue}>{burned}</Text>
-                <Text style={styles.sideStatLabel}>Đã đốt</Text>
-              </View>
-            </View>
-
-            <View style={styles.macroRow}>
-              <View style={styles.macroCircle}>
-                <Text style={styles.macroCircleValue}>{Math.round(totalNutrition.carbs)}</Text>
-                <Text style={styles.macroCircleSub}>/ {carbsGoal} g</Text>
-                <Text style={styles.macroCircleLabel}>Carbs</Text>
-              </View>
-              <View style={styles.macroCircle}>
-                <Text style={styles.macroCircleValue}>{Math.round(totalNutrition.protein)}</Text>
-                <Text style={styles.macroCircleSub}>/ {proteinGoal} g</Text>
-                <Text style={styles.macroCircleLabel}>Protein</Text>
-              </View>
-              <View style={styles.macroCircle}>
-                <Text style={styles.macroCircleValue}>{Math.round(totalNutrition.fat)}</Text>
-                <Text style={styles.macroCircleSub}>/ {fatGoal} g</Text>
-                <Text style={styles.macroCircleLabel}>Fat</Text>
-              </View>
-            </View>
-
-            <View style={styles.nutritionStatsGrid}>
-              <View style={styles.nutritionStatCard}>
-                <View style={[styles.statIcon, { backgroundColor: colors.primaryLight }]}>
-                  <Ionicons name="body-outline" size={20} color={colors.primary} />
-                </View>
-                <Text style={styles.nutritionStatValue}>{user?.weight_kg || '--'} kg</Text>
-                <Text style={styles.nutritionStatLabel}>Cân nặng</Text>
-              </View>
-              <View style={styles.nutritionStatCard}>
-                <View style={[styles.statIcon, { backgroundColor: '#E8F5E9' }]}>
-                  <Ionicons name="analytics-outline" size={20} color="#4CAF50" />
-                </View>
-                <Text style={styles.nutritionStatValue}>{bmi || '--'}</Text>
-                <Text style={styles.nutritionStatLabel}>BMI</Text>
-              </View>
-              <View style={styles.nutritionStatCard}>
-                <View style={[styles.statIcon, { backgroundColor: '#F3E8FF' }]}>
-                  <Ionicons name="fast-food-outline" size={20} color={colors.protein} />
-                </View>
-                <Text style={styles.nutritionStatValue}>{Math.round(totalNutrition.protein)}g</Text>
-                <Text style={styles.nutritionStatLabel}>Protein</Text>
-              </View>
-              <View style={styles.nutritionStatCard}>
-                <View style={[styles.statIcon, { backgroundColor: '#FFF4E6' }]}>
-                  <Ionicons name="nutrition-outline" size={20} color={colors.carbs} />
-                </View>
-                <Text style={styles.nutritionStatValue}>{Math.round(totalNutrition.carbs)}g</Text>
-                <Text style={styles.nutritionStatLabel}>Carbs</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* Calendar quick access */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Lịch hôm nay</Text>
-            <TouchableOpacity onPress={goToCalendar}>
-              <Text style={styles.seeAllText}>Xem tất cả</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.calendarCard}>
-            <View style={styles.calendarDateHeader}>
-              <Ionicons name="calendar-outline" size={20} color={colors.primary} />
-              <Text style={styles.calendarDate}>{format(new Date(), 'EEEE, d MMMM yyyy', { locale: vi })}</Text>
-            </View>
-            {todayEvents.length > 0 ? (
-              <View style={styles.eventsContainer}>
-                {todayEvents.map((event) => (
-                  <View key={event.id} style={styles.eventItem}>
-                    <View style={[styles.eventIconBg, { backgroundColor: `${getCategoryColor(event.category)}15` }]}>
-                      <Ionicons name={getCategoryIcon(event.category) as any} size={20} color={getCategoryColor(event.category)} />
-                    </View>
-                    <View style={styles.eventContent}>
-                      <Text style={styles.eventTitle}>{event.title}</Text>
-                      {event.notes && <Text style={styles.eventNotes}>{event.notes}</Text>}
-                    </View>
-                    <View style={styles.eventTime}>
-                      <Ionicons name="time-outline" size={14} color={colors.textLight} />
-                      <Text style={styles.eventTimeText}>{event.time}</Text>
-                    </View>
+                <View style={styles.kcalCircleContainer}>
+                  <Svg width={150} height={150}>
+                    {/* Background circle */}
+                    <Circle
+                      cx={75}
+                      cy={75}
+                      r={67}
+                      stroke={colors.border}
+                      strokeWidth={8}
+                      fill="none"
+                    />
+                    {/* Progress circle */}
+                    <Circle
+                      cx={75}
+                      cy={75}
+                      r={67}
+                      stroke={calorieIntakePercent >= 100 ? colors.warning : colors.primary}
+                      strokeWidth={8}
+                      fill="none"
+                      strokeDasharray={`${(Math.min(calorieIntakePercent, 100) / 100) * 2 * Math.PI * 67} ${2 * Math.PI * 67}`}
+                      strokeDashoffset={0}
+                      rotation={-90}
+                      origin="75, 75"
+                      strokeLinecap="round"
+                    />
+                  </Svg>
+                  <View style={styles.kcalInner}>
+                    <Text style={styles.kcalNumber}>{remaining}</Text>
+                    <Text style={styles.kcalLabel}>kcal còn lại</Text>
                   </View>
-                ))}
+                </View>
+                <View style={styles.sideStat}>
+                  <Text style={styles.sideStatValue}>{burned}</Text>
+                  <Text style={styles.sideStatLabel}>Đã đốt</Text>
+                </View>
               </View>
-            ) : (
-              <View style={styles.emptyEvents}>
-                <Ionicons name="calendar-outline" size={40} color={colors.textLight} />
-                <Text style={styles.emptyEventsText}>Không có sự kiện hôm nay</Text>
-                <TouchableOpacity style={styles.addEventBtn} onPress={goToCalendar}>
-                  <Text style={styles.addEventBtnText}>Thêm sự kiện</Text>
+
+              <View style={styles.macroRow}>
+                <View style={styles.macroCircle}>
+                  <Text style={styles.macroCircleValue}>{Math.round(totalNutrition.carbs)}</Text>
+                  <Text style={styles.macroCircleSub}>/ {carbsGoal} g</Text>
+                  <Text style={styles.macroCircleLabel}>Carbs</Text>
+                </View>
+                <View style={styles.macroCircle}>
+                  <Text style={styles.macroCircleValue}>{Math.round(totalNutrition.protein)}</Text>
+                  <Text style={styles.macroCircleSub}>/ {proteinGoal} g</Text>
+                  <Text style={styles.macroCircleLabel}>Protein</Text>
+                </View>
+                <View style={styles.macroCircle}>
+                  <Text style={styles.macroCircleValue}>{Math.round(totalNutrition.fat)}</Text>
+                  <Text style={styles.macroCircleSub}>/ {fatGoal} g</Text>
+                  <Text style={styles.macroCircleLabel}>Fat</Text>
+                </View>
+              </View>
+
+              <View style={styles.nutritionStatsGrid}>
+                <View style={styles.nutritionStatCard}>
+                  <View style={[styles.statIcon, { backgroundColor: colors.primaryLight }]}>
+                    <Ionicons name="body-outline" size={20} color={colors.primary} />
+                  </View>
+                  <Text style={styles.nutritionStatValue}>{user?.weight_kg || '--'} kg</Text>
+                  <Text style={styles.nutritionStatLabel}>Cân nặng</Text>
+                </View>
+                <View style={styles.nutritionStatCard}>
+                  <View style={[styles.statIcon, { backgroundColor: '#E8F5E9' }]}>
+                    <Ionicons name="analytics-outline" size={20} color="#4CAF50" />
+                  </View>
+                  <Text style={styles.nutritionStatValue}>{bmi || '--'}</Text>
+                  <Text style={styles.nutritionStatLabel}>BMI</Text>
+                </View>
+                <View style={styles.nutritionStatCard}>
+                  <View style={[styles.statIcon, { backgroundColor: '#F3E8FF' }]}>
+                    <Ionicons name="fast-food-outline" size={20} color={colors.protein} />
+                  </View>
+                  <Text style={styles.nutritionStatValue}>{Math.round(totalNutrition.protein)}g</Text>
+                  <Text style={styles.nutritionStatLabel}>Protein</Text>
+                </View>
+                <View style={styles.nutritionStatCard}>
+                  <View style={[styles.statIcon, { backgroundColor: '#FFF4E6' }]}>
+                    <Ionicons name="nutrition-outline" size={20} color={colors.carbs} />
+                  </View>
+                  <Text style={styles.nutritionStatValue}>{Math.round(totalNutrition.carbs)}g</Text>
+                  <Text style={styles.nutritionStatLabel}>Carbs</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          {/* Calendar quick access */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Lịch hôm nay</Text>
+              <TouchableOpacity onPress={goToCalendar}>
+                <Text style={styles.seeAllText}>Xem tất cả</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.calendarCard}>
+              <View style={styles.calendarDateHeader}>
+                <Ionicons name="calendar-outline" size={20} color={colors.primary} />
+                <Text style={styles.calendarDate}>{format(new Date(), 'EEEE, d MMMM yyyy', { locale: vi })}</Text>
+              </View>
+              {todayEvents.length > 0 ? (
+                <View style={styles.eventsContainer}>
+                  {todayEvents.map((event) => (
+                    <View key={event.id} style={styles.eventItem}>
+                      <View style={[styles.eventIconBg, { backgroundColor: `${getCategoryColor(event.category)}15` }]}>
+                        <Ionicons name={getCategoryIcon(event.category) as any} size={20} color={getCategoryColor(event.category)} />
+                      </View>
+                      <View style={styles.eventContent}>
+                        <Text style={styles.eventTitle}>{event.title}</Text>
+                        {event.notes && <Text style={styles.eventNotes}>{event.notes}</Text>}
+                      </View>
+                      <View style={styles.eventTime}>
+                        <Ionicons name="time-outline" size={14} color={colors.textLight} />
+                        <Text style={styles.eventTimeText}>{event.time}</Text>
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              ) : (
+                <View style={styles.emptyEvents}>
+                  <Ionicons name="calendar-outline" size={40} color={colors.textLight} />
+                  <Text style={styles.emptyEventsText}>Không có sự kiện hôm nay</Text>
+                  <TouchableOpacity style={styles.addEventBtn} onPress={goToCalendar}>
+                    <Text style={styles.addEventBtnText}>Thêm sự kiện</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </View>
+          </View>
+
+          {/* Recent Workouts */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Bài tập gần đây</Text>
+              <TouchableOpacity onPress={goToExercises}>
+                <Text style={styles.seeAllText}>Xem tất cả</Text>
+              </TouchableOpacity>
+            </View>
+            {recentWorkouts.length > 0 ? (
+              recentWorkouts.map((workout) => (
+                <TouchableOpacity key={workout.log_id} style={styles.workoutCard}>
+                  <View style={styles.workoutIconContainer}>
+                    <Ionicons name="barbell-outline" size={20} color={colors.primary} />
+                  </View>
+                  <View style={styles.workoutInfo}>
+                    <Text style={styles.workoutName}>{workout.exercise_name}</Text>
+                    <Text style={styles.workoutStats}>
+                      {workout.calories_burned_estimated} kcal • {workout.duration_minutes} phút
+                    </Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
                 </TouchableOpacity>
+              ))
+            ) : (
+              <View style={styles.emptyState}>
+                <Text style={styles.emptyIcon}>🏋️</Text>
+                <Text style={styles.emptyStateText}>Chưa có bài tập nào hôm nay</Text>
+                <Text style={styles.emptyStateSubtext}>Bắt đầu tập luyện để theo dõi tiến trình!</Text>
               </View>
             )}
           </View>
-        </View>
 
-        {/* Recent Workouts */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Bài tập gần đây</Text>
-            <TouchableOpacity onPress={goToExercises}>
-              <Text style={styles.seeAllText}>Xem tất cả</Text>
-            </TouchableOpacity>
-          </View>
-          {recentWorkouts.length > 0 ? (
-            recentWorkouts.map((workout) => (
-              <TouchableOpacity key={workout.log_id} style={styles.workoutCard}>
-                <View style={styles.workoutIconContainer}>
-                  <Ionicons name="barbell-outline" size={20} color={colors.primary} />
-                </View>
-                <View style={styles.workoutInfo}>
-                  <Text style={styles.workoutName}>{workout.exercise_name}</Text>
-                  <Text style={styles.workoutStats}>
-                    {workout.calories_burned_estimated} kcal • {workout.duration_minutes} phút
-                  </Text>
-                </View>
-                <Ionicons name="chevron-forward" size={20} color={colors.textSecondary} />
+          {/* Today's Meals - Horizontal Carousel */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>Bữa ăn hôm nay</Text>
+              <TouchableOpacity onPress={goToFoodLog}>
+                <Text style={styles.seeAllText}>Xem tất cả</Text>
               </TouchableOpacity>
-            ))
-          ) : (
-            <View style={styles.emptyState}>
-              <Text style={styles.emptyIcon}>🏋️</Text>
-              <Text style={styles.emptyStateText}>Chưa có bài tập nào hôm nay</Text>
-              <Text style={styles.emptyStateSubtext}>Bắt đầu tập luyện để theo dõi tiến trình!</Text>
             </View>
-          )}
-        </View>
-
-        {/* Today's Meals - Horizontal Carousel */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Bữa ăn hôm nay</Text>
-            <TouchableOpacity onPress={goToFoodLog}>
-              <Text style={styles.seeAllText}>Xem tất cả</Text>
-            </TouchableOpacity>
-          </View>
-          {todayMeals.length > 0 ? (
-            <FlatList
-              data={todayMeals}
-              renderItem={({ item }: { item: MealItem }) => (
-                <View style={styles.mealCardWrapper}>
-                  <MealCard meal={item} />
-                </View>
-              )}
-              keyExtractor={(item: MealItem) => item.id.toString()}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.mealsCarousel}
-              snapToInterval={width - spacing.md * 3}
-              decelerationRate="fast"
-            />
-          ) : (
-            <View style={styles.emptyState}>
-              <Text style={styles.emptyIcon}>🍽️</Text>
-              <Text style={styles.emptyStateText}>Chưa ghi nhận bữa ăn nào</Text>
-              <Text style={styles.emptyStateSubtext}>Ghi nhận dinh dưỡng để đạt mục tiêu!</Text>
-            </View>
-          )}
-        </View>
-
-        {/* Kiến thức sức khỏe */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>📚 Kiến thức sức khỏe</Text>
-            <TouchableOpacity onPress={goToHealthInsights}>
-              <Text style={styles.seeAllText}>Xem tất cả</Text>
-            </TouchableOpacity>
-          </View>
-          {ARTICLES.slice(0, 5).map((article) => (
-            <TouchableOpacity key={article.id} style={styles.articleCard} onPress={goToHealthInsights}>
-              <Image source={{ uri: article.image }} style={styles.articleImage} />
-              <View style={styles.articleContent}>
-                <View style={styles.articleHeader}>
-                  <View style={styles.categoryBadge}>
-                    <Text style={styles.categoryText}>
-                      {article.category === 'nutrition' ? '🥗 Dinh dưỡng' :
-                       article.category === 'wellness' ? '🧘 Sức khỏe' : '🏋️ Tập luyện'}
-                    </Text>
+            {todayMeals.length > 0 ? (
+              <FlatList
+                data={todayMeals}
+                renderItem={({ item }: { item: MealItem }) => (
+                  <View style={styles.mealCardWrapper}>
+                    <MealCard meal={item} />
                   </View>
-                  <View style={styles.readTimeContainer}>
-                    <Ionicons name="time-outline" size={14} color={colors.textSecondary} />
-                    <Text style={styles.readTime}>{article.readTime} phút</Text>
-                  </View>
-                </View>
-                <Text style={styles.articleTitle} numberOfLines={2}>{article.title}</Text>
-                <Text style={styles.articleExcerpt} numberOfLines={2}>{article.excerpt}</Text>
-                <View style={styles.articleFooter}>
-                  <Text style={styles.articleAuthor}>{article.author}</Text>
-                  <Text style={styles.articleDate}>{article.publishedDate}</Text>
-                </View>
+                )}
+                keyExtractor={(item: MealItem) => item.id.toString()}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.mealsCarousel}
+                snapToInterval={width - spacing.md * 3}
+                decelerationRate="fast"
+              />
+            ) : (
+              <View style={styles.emptyState}>
+                <Text style={styles.emptyIcon}>🍽️</Text>
+                <Text style={styles.emptyStateText}>Chưa ghi nhận bữa ăn nào</Text>
+                <Text style={styles.emptyStateSubtext}>Ghi nhận dinh dưỡng để đạt mục tiêu!</Text>
               </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+            )}
+          </View>
+
+          {/* Kiến thức sức khỏe */}
+          <View style={styles.section}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>📚 Kiến thức sức khỏe</Text>
+              <TouchableOpacity onPress={goToHealthInsights}>
+                <Text style={styles.seeAllText}>Xem tất cả</Text>
+              </TouchableOpacity>
+            </View>
+            {ARTICLES.slice(0, 5).map((article) => (
+              <TouchableOpacity key={article.id} style={styles.articleCard} onPress={goToHealthInsights}>
+                <Image source={{ uri: article.image }} style={styles.articleImage} />
+                <View style={styles.articleContent}>
+                  <View style={styles.articleHeader}>
+                    <View style={styles.categoryBadge}>
+                      <Text style={styles.categoryText}>
+                        {article.category === 'nutrition' ? '🥗 Dinh dưỡng' :
+                          article.category === 'wellness' ? '🧘 Sức khỏe' : '🏋️ Tập luyện'}
+                      </Text>
+                    </View>
+                    <View style={styles.readTimeContainer}>
+                      <Ionicons name="time-outline" size={14} color={colors.textSecondary} />
+                      <Text style={styles.readTime}>{article.readTime} phút</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.articleTitle} numberOfLines={2}>{article.title}</Text>
+                  <Text style={styles.articleExcerpt} numberOfLines={2}>{article.excerpt}</Text>
+                  <View style={styles.articleFooter}>
+                    <Text style={styles.articleAuthor}>{article.author}</Text>
+                    <Text style={styles.articleDate}>{article.publishedDate}</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
       </ScrollView>
     </View>
