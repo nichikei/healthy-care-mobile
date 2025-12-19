@@ -8,7 +8,7 @@ export const config = {
   port: process.env.PORT || 3001,
   nodeEnv: process.env.NODE_ENV || 'development',
 
-  // Database
+  // Database configuration
   databaseUrl: process.env.DATABASE_URL,
   defaultUserId: Number(process.env.DEFAULT_USER_ID || 1),
   allowGuestMode: process.env.ALLOW_GUEST_MODE !== 'false',
