@@ -34,6 +34,7 @@ const mapAuthResponse = async (data: any): Promise<User | null> => {
   return user ?? null;
 };
 
+// Provider component for authentication context
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
