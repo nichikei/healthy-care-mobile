@@ -7,7 +7,7 @@ import * as authController from '../controllers/authController.js';
 // Initialize Express router
 const router = express.Router();
 
-// Register
+// User Registration Endpoint
 router.post(
   '/register',
   body('email').isEmail().withMessage('Valid email required'),
