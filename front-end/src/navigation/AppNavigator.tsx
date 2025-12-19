@@ -27,7 +27,7 @@ import SettingsScreen from '../screens/settings/SettingsScreen';
 import { UtilitiesStackNavigator } from './UtilitiesStackNavigator';
 import type { UtilitiesStackParamList } from './UtilitiesStackNavigator';
 
-// Types
+// Navigation Type Definitions
 export type RootStackParamList = {
   Auth: undefined;
   Onboarding: undefined;
